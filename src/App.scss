@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+$size__font--large: 36px;
+$size__font--regular: 18px;
+$size__font--text: 16px;
+$size__font--text2: 14px;
+$size__font--small: 12px;
+$size__font--hint: 10px;
+
+$color--red: #fd3b3b;
+$color--grey--dark: #8d8989;
+$color--grey--light: #9e9e9e;
+$color--grey--border: #e5e5e5;
+$color--black: #000000;
+$color--white: #ffffff;
+$color--blue: #2443af;
+
+*,
+*:before,
+*::after {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0px;
+  padding: 0px;
+}
+
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+  font-family: "open-sans-semibold", sans-serif;
+}
+
+div,
+section,
+header,
+form {
+  &.flex {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &.flex-align-start {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  &.flex-align-center {
+    display: flex;
+    align-items: center;
+  }
+
+  &.text-center {
+    text-align: center;
+  }
+
+  &.red {
+    color: $color--red;
+  }
+
+  &.white {
+    color: $color--white;
+  }
+
+  &.small-font {
+    font-size: $size__font--small;
+  }
+}
+
+p {
+  margin: 0;
+  &.white {
+    color: $color--white;
+  }
+  &.red {
+    color: $color--red;
+  }
+  &.grey {
+    color: $color--grey--light;
+  }
+}
