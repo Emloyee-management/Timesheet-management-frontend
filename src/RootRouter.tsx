@@ -1,6 +1,7 @@
 import React from "react";
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import TemplatePage from "./containers/TemplatePage";
 
 type IRoutRouterProps = {};
 
@@ -16,7 +17,9 @@ class RootRouter extends React.Component<IRoutRouterProps, IRoutRouterState> {
   render() {
     return (
       <BrowserRouter>
-        <Switch>{/* <Route path='/' component={HomePage} /> */}</Switch>
+        <Switch>
+          <Route path="/" component={TemplatePage} />
+        </Switch>
       </BrowserRouter>
     );
   }
