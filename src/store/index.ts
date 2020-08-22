@@ -1,12 +1,20 @@
-import { createStore, applyMiddleware, Action, Store, AnyAction } from "redux";
+import {
+  createStore,
+  applyMiddleware,
+  Action,
+  Store,
+  AnyAction,
+  Middleware,
+} from "redux";
 import thunkMiddleware, { ThunkDispatch } from "redux-thunk";
 import rootReducer, { IStoreState } from "./reducers";
 
-export type DispatchFunction = ThunkDispatch<IStoreState, null, Action>;
+let middleware: Middleware[] = [thunkMiddleware];
 
 const store: Store<IStoreState, AnyAction> = createStore(
   rootReducer,
-  applyMiddleware(thunkMiddleware)
+  applyMiddleware(...middleware)
 );
 
+export type DispatchFunction = ThunkDispatch<IStoreState, null, Action>;
 export default store;

@@ -25,6 +25,7 @@ class RootRouter extends React.Component<IRoutRouterProps, IRoutRouterState> {
           <Route path="/home" component={HomePage}/>
           <Route path="/login" component={LoginPage}/>
           <Route path="/summary" component={SummaryPage}/>
+          <Route path="/" component={LoginPage} />
         </Switch>
       </BrowserRouter>
     );

@@ -10,34 +10,39 @@ export enum SessionActionType {
 }
 
 export type SessionAction = Action<SessionActionType>;
-export type SessionAsyncAction = ThunkAction<
-  Promise<void>,
+export type SessionAsyncAction<T> = ThunkAction<
+  Promise<T>,
   IStoreState,
   null,
   AnyAction
 >;
 
 //updateUserInfo dispatch function
-const updateUserInfo: ActionCreator<SessionAction> = (userInfo: IUserInfo) => ({
+export const updateUserInfo: ActionCreator<SessionAction> = (
+  userInfo: IUserInfo
+) => ({
   type: SessionActionType.UPDATE_USER_INFO,
   payload: { ...userInfo },
 });
 
-export const login: ActionCreator<SessionAsyncAction> = (username: string, password: string) => 
-   async (dispatch) => {
-
-    axios.get(`http://localhost:8080/login/${username}/${password}`)
-      .then((res:AxiosResponse) => {
-        if(res.data.username==null){
-          return false;
-        }else{
-          dispatch(updateUserInfo( res.data  as IUserInfo));
-          return true;
-
-        }
-        
-      })
+export const login: ActionCreator<SessionAsyncAction<boolean>> = (
+  username: string,
+  password: string
+) => {
+  return async (dispatch) => {
+    //   const result: AxiosResponse = await axios.get(
+    //     `http://localhost:8080/login/${username}/${password}`
+    //   );
+    //   dispatch(updateUserInfo(result.data as IUserInfo));
+    //   if ((result.data as IUserInfo).id == null) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
+    // };
+    return true;
   };
+};
 
   //getAllSummaryInfo dispatch function
 const updateSummaryInfo: ActionCreator<SessionAction> = (summary: ISummaryInfo) => ({
