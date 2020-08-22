@@ -44,7 +44,7 @@ class LoginPage extends React.Component<ILoginPageProps, ILoginPageState> {
   ) => {
     event.preventDefault();
     const result: AxiosResponse = await axios.get(
-      `http://localhost:8082/login/${this.state.username}/${this.state.password}`
+      `http://localhost:8080/login/${this.state.username}/${this.state.password}`
     );
     this.props.updateUserInfo(result.data as IUserInfo);
     if ((result.data as IUserInfo).id == null) {
