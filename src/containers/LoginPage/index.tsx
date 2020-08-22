@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
@@ -16,7 +16,7 @@ type ILoginPageProps = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
   RouteComponentProps;
 
-const initialState = {};
+const initialState = {username:'', password:''};
 
 type ILoginPageState = typeof initialState;
 
@@ -26,31 +26,30 @@ class LoginPage extends React.Component<ILoginPageProps, ILoginPageState> {
     this.state = initialState;
   }
 
-  handleUsernameChange = (event: any) => {
-    this.props.session.userInfo.username = event.target.value;
+  handleUsernameChange = (event: React.FormEvent<HTMLInputElement>) => {
 
-    console.log(this.props.session.userInfo)
+    this.setState({
+      username: event.currentTarget.value
+
+    });
+    // console.log(this.state)
   };
 
-  handlePasswordChange = (event: any) => {
-    this.props.session.userInfo.password = event.target.value;
+  handlePasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
 
-    console.log(this.props.session.userInfo)
+    this.setState({
+      password: event.currentTarget.value
+      
+    });
+    // console.log(this.state)
   };
 
-  handleSubmit = (event:any) => {
+  handleSubmit = async (event: any) => {
+
     event.preventDefault();
-
-    axios.post(`/login/`, {
-      params: {
-        username: this.props.session.userInfo.username,
-        password: this.props.session.userInfo.password
-      }
-    })
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      })
+    await this.props.login(this.state.username, this.state.password).
+    
+    
   }
 
   render() {

@@ -1,6 +1,7 @@
 import { Action, ActionCreator, AnyAction } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { IStoreState } from "../reducers";
+import axios, { AxiosResponse } from "axios";
 
 export enum SessionActionType {
   UPDATE_SESSION_INFO = "UPDATE_SESSION_INFO",
@@ -21,14 +22,19 @@ const updateUserInfo: ActionCreator<SessionAction> = (userInfo: IUserInfo) => ({
   payload: { ...userInfo },
 });
 
-export const login: ActionCreator<ThunkAction<
-  Promise<void>,
-  IStoreState,
-  null,
-  SessionAction
->> = (username: string, password: string) => {
-  return async (dispatch) => {
-    // await ApiClient.auth.loginWithPhoneAndCode(phone, code);
-    dispatch(updateUserInfo({ username: username, password: password } as IUserInfo));
+export const login: ActionCreator<SessionAsyncAction> = (username: string, password: string) => 
+   async (dispatch) => {
+
+    axios.get(`http://localhost:8080/login/${username}/${password}`)
+      .then((res:AxiosResponse) => {
+        if(res.data.username==null){
+          return false;
+        }else{
+          dispatch(updateUserInfo( res.data  as IUserInfo));
+          return true;
+
+        }
+        
+      })
   };
-};
+
