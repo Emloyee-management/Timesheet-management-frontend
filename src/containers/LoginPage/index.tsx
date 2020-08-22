@@ -12,7 +12,7 @@ const mapStateToProps = (state: IStoreState) => ({ session: state.session });
 const mapDispatchToProps = (dispatch: DispatchFunction) =>
   bindActionCreators({ login }, dispatch);
 
-type ITemplatePageProps = ReturnType<typeof mapStateToProps> &
+type ILoginPageProps = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
   RouteComponentProps;
 
@@ -20,13 +20,13 @@ const initialState = {
     activeTab:1
 };
 
-type ITemplatePageState = typeof initialState;
+type ILoginPageState = typeof initialState;
 
 class LoginPage extends React.Component<
-  ITemplatePageProps,
-  ITemplatePageState
+  ILoginPageProps,
+  ILoginPageState
 > {
-  constructor(props: ITemplatePageProps) {
+  constructor(props: ILoginPageProps) {
     super(props);
     this.state = initialState;
   }
