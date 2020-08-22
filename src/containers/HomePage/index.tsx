@@ -18,7 +18,7 @@ type IHomePageProps = ReturnType<typeof mapStateToProps> &
   RouteComponentProps;
 
 const initialState = {
-  activeTab: "summary",
+  activeTab: "summary" as string | null,
 };
 
 type IHomePageState = typeof initialState;
@@ -29,7 +29,7 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
     this.state = initialState;
   }
 
-  handleSelect = (selectedTab: any) => {
+  handleSelect = (selectedTab: string | null) => {
     // The active tab must be set into the state so that
     // the Tabs component knows about the change and re-renders.
     this.setState({

@@ -15,6 +15,7 @@ export type SessionAsyncAction = ThunkAction<
   AnyAction
 >;
 
+//updateUserInfo dispatch function
 const updateUserInfo: ActionCreator<SessionAction> = (userInfo: IUserInfo) => ({
   type: SessionActionType.UPDATE_USER_INFO,
   payload: { ...userInfo },
@@ -28,6 +29,6 @@ export const login: ActionCreator<ThunkAction<
 >> = (username: string, password: string) => {
   return async (dispatch) => {
     // await ApiClient.auth.loginWithPhoneAndCode(phone, code);
-    dispatch(updateUserInfo({ username: "abc", password: "abc" } as IUserInfo));
+    dispatch(updateUserInfo({ username: username, password: password } as IUserInfo));
   };
 };
