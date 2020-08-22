@@ -2,6 +2,8 @@ import React from "react";
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import TemplatePage from "./containers/TemplatePage";
+import HomePage from "./containers/HomePage";
+import LoginPage from "./containers/LoginPage";
 
 type IRoutRouterProps = {};
 
@@ -18,7 +20,9 @@ class RootRouter extends React.Component<IRoutRouterProps, IRoutRouterState> {
     return (
       <BrowserRouter>
         <Switch>
-          <Route path="/" component={TemplatePage} />
+          <Route path="/template" component={TemplatePage} />
+          <Route path="/home" component={HomePage}/>
+          <Route path="/login" component={LoginPage}/>
         </Switch>
       </BrowserRouter>
     );
