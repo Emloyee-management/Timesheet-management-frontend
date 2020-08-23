@@ -7,6 +7,7 @@ import { DispatchFunction } from "../../store";
 import { login } from "../../store/actions/session";
 import { Tabs, Tab } from "react-bootstrap";
 import TemplatePage from "../TemplatePage";
+import SummaryPage from "../SummaryPage";
 
 const mapStateToProps = (state: IStoreState) => ({ session: state.session });
 
@@ -42,9 +43,7 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
       <>
         <Tabs activeKey={this.state.activeTab} onSelect={this.handleSelect}>
           <Tab eventKey="summary" title="Summary">
-            Summary Tab. Go to HomePage/index.tsx and change this into a custom
-            Component. Sample:
-            <TemplatePage />
+            <SummaryPage />
           </Tab>
           <Tab eventKey="timesheet" title="Timesheet">
             Timesheet Tab. Go to HomePage/index.tsx and change this into a custom

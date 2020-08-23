@@ -47,7 +47,7 @@ class LoginPage extends React.Component<ILoginPageProps, ILoginPageState> {
   handleSubmit = async (event: any) => {
 
     event.preventDefault();
-    await this.props.login(this.state.username, this.state.password).
+    await this.props.login(this.state.username, this.state.password)
     
     
   }
