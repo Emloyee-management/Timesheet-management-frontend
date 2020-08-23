@@ -30,6 +30,7 @@ h4 {
   padding: 0px;
 }
 
+#root,
 html,
 body {
   margin: 0px;
@@ -91,3 +92,5 @@ p {
 @import "./containers/LoginPage/style.scss";
 @import "./containers/HomePage/style.scss";
 @import "./containers/SummaryPage/style.scss";
+
+@import "./containers/ProfilePage/style.scss";
