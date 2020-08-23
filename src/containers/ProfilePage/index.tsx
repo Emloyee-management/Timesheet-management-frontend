@@ -114,15 +114,7 @@ class ProfilePage extends React.Component<
       token: this.props.session.userInfo.token,
     } as IUserInfo;
     axios
-      .post("htttp://localhost:8080/userprofile", newUser, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,OPTIONS",
-          "Access-Control-Allow-Credentials": true,
-          "Access-Control-Allow-Headers":
-            "Content-Type, Authorization, Content-Length, X-Requested-With",
-        },
-      })
+      .post("htttp://localhost:7777/personal-info-service/userprofile", newUser)
       .then(() => {
         alert("update succeeded!");
       })
