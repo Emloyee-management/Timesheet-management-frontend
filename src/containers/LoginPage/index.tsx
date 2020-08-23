@@ -7,6 +7,7 @@ import { DispatchFunction } from "../../store";
 import { login, updateUserInfo } from "../../store/actions/session";
 import { AxiosResponse } from "axios";
 import axios from "axios";
+import { baseUrl } from "src/App";
 
 const mapStateToProps = (state: IStoreState) => ({ session: state.session });
 
@@ -44,7 +45,7 @@ class LoginPage extends React.Component<ILoginPageProps, ILoginPageState> {
   ) => {
     event.preventDefault();
     const result: AxiosResponse = await axios.get(
-      `http://localhost:8080/login/${this.state.username}/${this.state.password}`
+      `${baseUrl}/login/${this.state.username}/${this.state.password}`
     );
     this.props.updateUserInfo(result.data as IUserInfo);
     if ((result.data as IUserInfo).id == null) {

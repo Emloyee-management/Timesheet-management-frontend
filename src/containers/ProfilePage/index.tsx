@@ -6,6 +6,7 @@ import { IStoreState } from "../../store/reducers";
 import { DispatchFunction } from "../../store";
 import { login } from "../../store/actions/session";
 import axios from "axios";
+import { baseUrl } from "src/App";
 
 const mapStateToProps = (state: IStoreState) => ({ session: state.session });
 
@@ -114,7 +115,7 @@ class ProfilePage extends React.Component<
       token: this.props.session.userInfo.token,
     } as IUserInfo;
     axios
-      .post("htttp://localhost:7777/personal-info-service/userprofile", newUser)
+      .post(`${baseUrl}/userprofile`, newUser)
       .then(() => {
         alert("update succeeded!");
       })
@@ -123,42 +124,7 @@ class ProfilePage extends React.Component<
       });
   };
 
-  componentDidUpdate = () => {
-    // this.setState(
-    //   {
-    //     newUser: {
-    //       id: this.props.session.userInfo.id,
-    //       username: this.props.session.userInfo.username,
-    //       password: this.props.session.userInfo.password,
-    //       phone: this.state.phone,
-    //       email: this.state.email,
-    //       address: this.state.address,
-    //       emergency1Name: this.state.emergencyContact1,
-    //       emergency1Phone: this.state.emergencyContact1Phone,
-    //       emergency2Name: this.state.emergencyContact2,
-    //       emergency2Phone: this.state.emergencyContact2Phone,
-    //       token: this.props.session.userInfo.token,
-    //     } as IUserInfo,
-    //   },
-    //   () => {
-    //     console.info(this.state.newUser);
-    //   }
-    // );
-    const newUser = {
-      id: this.props.session.userInfo.id,
-      username: this.props.session.userInfo.username,
-      password: this.props.session.userInfo.password,
-      phone: this.state.phone,
-      email: this.state.email,
-      address: this.state.address,
-      emergency1Name: this.state.emergencyContact1,
-      emergency1Phone: this.state.emergencyContact1Phone,
-      emergency2Name: this.state.emergencyContact2,
-      emergency2Phone: this.state.emergencyContact2Phone,
-      token: this.props.session.userInfo.token,
-    } as IUserInfo;
-    // console.info(newUser);
-  };
+  componentDidUpdate = () => {};
 
   render() {
     return (

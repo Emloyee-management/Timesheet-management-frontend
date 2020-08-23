@@ -4,7 +4,9 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { IStoreState } from "../../store/reducers";
 import { DispatchFunction } from "../../store";
+import Moment from "moment";
 import { login } from "../../store/actions/session";
+import moment from "moment";
 
 const mapStateToProps = (state: IStoreState) => ({ session: state.session });
 
@@ -16,13 +18,42 @@ type IDetailPageProps = ReturnType<typeof mapStateToProps> &
   RouteComponentProps;
 
 const initialState = {
-  phone: "",
-  email: "",
-  address: "",
-  emergencyContact1: "",
-  emergencyContact1Phone: "",
-  emergencyContact2: "",
-  emergencyContact2Phone: "",
+  id: "5f42d82260458405d2e42980",
+
+  userId: "5f407859e111306b4098f4fb",
+  totalBillingHours: 32,
+  totalCompensatedHours: 40,
+  submissionStatus: "Incomplete",
+  approvalStatus: "approved",
+  day1: "03/25/2018",
+  day1Starttime: "9:00",
+  day1Endtime: "18:00",
+  day1Status: "floating",
+  day2: "03/26/2018",
+  day2Starttime: "9:00",
+  day2Endtime: "18:00",
+  day2Status: "",
+  day3: "03/27/2018",
+  day3Starttime: "9:00",
+  day3Endtime: "18:00",
+  day3Status: "",
+  day4: "03/28/2018",
+  day4Starttime: "9:00",
+  day4Endtime: "18:00",
+  day4Status: "",
+  day5: "03/29/2018",
+  day5Starttime: "9:00",
+  day5Endtime: "18:00",
+  day5Status: "",
+  day6: "03/30/2018",
+  day6Starttime: "9:00",
+  day6Endtime: "18:00",
+  day6Status: "",
+  day7: "03/31/2018",
+  day7Starttime: "9:00",
+  day7Endtime: "18:00",
+  day7Status: "",
+  comment: "sucks",
 };
 
 type IDetailPageState = typeof initialState;
@@ -34,130 +65,379 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
   }
 
   componentDidMount = () => {
-    this.setState({
-      phone: this.props.session.userInfo.phone,
-      email: this.props.session.userInfo.email,
-      address: this.props.session.userInfo.address,
-      emergencyContact1: this.props.session.userInfo.emergency1Name,
-      emergencyContact1Phone: this.props.session.userInfo.emergency1Phone,
-      emergencyContact2: this.props.session.userInfo.emergency2Name,
-      emergencyContact2Phone: this.props.session.userInfo.emergency2Phone,
-    });
+    this.setState({});
   };
 
-  handlePhoneChange = (event: React.FormEvent<HTMLInputElement>) => {
-    this.setState({
-      phone: event.currentTarget.value,
-    });
-  };
-
-  handleEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
-    this.setState({
-      email: event.currentTarget.value,
-    });
-  };
-
-  handleAddressChange = (event: React.FormEvent<HTMLInputElement>) => {
-    this.setState({
-      address: event.currentTarget.value,
-    });
-  };
-
-  handleEmergencyContact1Change = (
-    event: React.FormEvent<HTMLInputElement>
-  ) => {
-    this.setState({
-      emergencyContact1: event.currentTarget.value,
-    });
-  };
-
-  handleEmergencyContact1PhoneChange = (
-    event: React.FormEvent<HTMLInputElement>
-  ) => {
-    this.setState({
-      emergencyContact1Phone: event.currentTarget.value,
-    });
-  };
-  handleEmergencyContact2Change = (
-    event: React.FormEvent<HTMLInputElement>
-  ) => {
-    this.setState({
-      emergencyContact2: event.currentTarget.value,
-    });
-  };
-  handleEmergencyContact2PhoneChange = (
-    event: React.FormEvent<HTMLInputElement>
-  ) => {
-    this.setState({
-      emergencyContact2Phone: event.currentTarget.value,
-    });
-  };
+  handlePhoneChange = (event: React.FormEvent<HTMLInputElement>) => {};
 
   handleSubmit = (event: any) => {
     event.preventDefault();
   };
 
-  componentDidUpdate = () => {
-    const newUser = {
-      id: this.props.session.userInfo.id,
-      username: this.props.session.userInfo.username,
-      password: this.props.session.userInfo.password,
-      phone: this.state.phone,
-      email: this.state.email,
-      address: this.state.address,
-      emergency1Name: this.state.emergencyContact1,
-      emergency1Phone: this.state.emergencyContact1Phone,
-      emergency2Name: this.state.emergencyContact2,
-      emergency2Phone: this.state.emergencyContact2Phone,
-      token: this.props.session.userInfo.token,
-    } as IUserInfo;
-  };
+  componentDidUpdate = () => {};
 
   render() {
     return (
       <div className="detail-page__container">
         <form onSubmit={this.handleSubmit}>
-          <p>Contact</p>
-          <input
-            type="text"
-            defaultValue={this.props.session.userInfo.phone}
-            onChange={this.handlePhoneChange}
-          />
-          <input
-            type="text"
-            defaultValue={this.props.session.userInfo.email}
-            onChange={this.handleEmailChange}
-          />
-          <input
-            type="text"
-            defaultValue={this.props.session.userInfo.address}
-            onChange={this.handleAddressChange}
-          />
-
-          <p>Emergency Contact 1</p>
-          <input
-            type="text"
-            defaultValue={this.props.session.userInfo.emergency1Name}
-            onChange={this.handleEmergencyContact1Change}
-          />
-          <input
-            type="text"
-            defaultValue={this.props.session.userInfo.emergency1Phone}
-            onChange={this.handleEmergencyContact1PhoneChange}
-          />
-
-          <p>Emergency Contact 2</p>
-          <input
-            type="text"
-            defaultValue={this.props.session.userInfo.emergency2Name}
-            onChange={this.handleEmergencyContact2Change}
-          />
-          <input
-            type="text"
-            defaultValue={this.props.session.userInfo.emergency2Phone}
-            onChange={this.handleEmergencyContact2PhoneChange}
-          />
-          <button type="submit">Save</button>
+          <div className="detail-page__form--first flex-align-center">
+            <div className="flex-align-center">
+              <p>Week Ending</p>
+              <input type="text" defaultValue={this.state.day7} />
+            </div>
+            <div className="flex-align-center">
+              <p>Total billing hours</p>
+              <input type="text" defaultValue={this.state.totalBillingHours} />
+            </div>
+            <div className="flex-align-center">
+              <p>Total Compensated Hours</p>
+              <input type="text" defaultValue={this.state.totalBillingHours} />
+            </div>
+          </div>
+          <div className="default-button">
+            <button>SET DEFAULT</button>
+          </div>
+          <div className="detail-page__form--second flex-align-center">
+            <div className="content flex-align-center">
+              <div>
+                <p>day</p>
+                <p>Sunday</p>
+                <p>Monday</p>
+                <p>Tuesday</p>
+                <p>Wednesday</p>
+                <p>Thursday</p>
+                <p>Friday</p>
+                <p>Saturday</p>
+              </div>
+              <div>
+                <p>Date</p>
+                <p>{this.state.day1}</p>
+                <p>{this.state.day2}</p>
+                <p>{this.state.day3}</p>
+                <p>{this.state.day4}</p>
+                <p>{this.state.day5}</p>
+                <p>{this.state.day6}</p>
+                <p>{this.state.day7}</p>
+              </div>
+            </div>
+            <div className="content flex-align-center">
+              <div>
+                <p>Starting time</p>
+                <p>{this.state.day1Starttime}</p>
+                <p>{this.state.day2Starttime}</p>
+                <p>{this.state.day3Starttime}</p>
+                <p>{this.state.day4Starttime}</p>
+                <p>{this.state.day5Starttime}</p>
+                <p>{this.state.day6Starttime}</p>
+                <p>{this.state.day7Starttime}</p>
+              </div>
+              <div>
+                <p>Ending time</p>
+                <p>{this.state.day1Endtime}</p>
+                <p>{this.state.day2Endtime}</p>
+                <p>{this.state.day3Endtime}</p>
+                <p>{this.state.day4Endtime}</p>
+                <p>{this.state.day5Endtime}</p>
+                <p>{this.state.day6Endtime}</p>
+                <p>{this.state.day7Endtime}</p>
+              </div>
+            </div>
+            <div className="content">
+              <p>Total Hours</p>
+              <p>
+                {moment(
+                  [
+                    this.state.day1Endtime.split(":")[0],
+                    this.state.day1Endtime.split(":")[1],
+                  ],
+                  "HH:mm"
+                ).diff(
+                  moment(
+                    [
+                      this.state.day1Starttime.split(":")[0],
+                      this.state.day1Starttime.split(":")[1],
+                    ],
+                    "HH:mm"
+                  ),
+                  "hours"
+                )}
+              </p>
+              <p>
+                {moment(
+                  [
+                    this.state.day2Endtime.split(":")[0],
+                    this.state.day2Endtime.split(":")[1],
+                  ],
+                  "HH:mm"
+                ).diff(
+                  moment(
+                    [
+                      this.state.day2Starttime.split(":")[0],
+                      this.state.day2Starttime.split(":")[1],
+                    ],
+                    "HH:mm"
+                  ),
+                  "hours"
+                )}
+              </p>
+              <p>
+                {moment(
+                  [
+                    this.state.day3Endtime.split(":")[0],
+                    this.state.day3Endtime.split(":")[1],
+                  ],
+                  "HH:mm"
+                ).diff(
+                  moment(
+                    [
+                      this.state.day3Starttime.split(":")[0],
+                      this.state.day3Starttime.split(":")[1],
+                    ],
+                    "HH:mm"
+                  ),
+                  "hours"
+                )}
+              </p>
+              <p>
+                {moment(
+                  [
+                    this.state.day4Endtime.split(":")[0],
+                    this.state.day4Endtime.split(":")[1],
+                  ],
+                  "HH:mm"
+                ).diff(
+                  moment(
+                    [
+                      this.state.day4Starttime.split(":")[0],
+                      this.state.day4Starttime.split(":")[1],
+                    ],
+                    "HH:mm"
+                  ),
+                  "hours"
+                )}
+              </p>
+              <p>
+                {moment(
+                  [
+                    this.state.day5Endtime.split(":")[0],
+                    this.state.day5Endtime.split(":")[1],
+                  ],
+                  "HH:mm"
+                ).diff(
+                  moment(
+                    [
+                      this.state.day5Starttime.split(":")[0],
+                      this.state.day5Starttime.split(":")[1],
+                    ],
+                    "HH:mm"
+                  ),
+                  "hours"
+                )}
+              </p>
+              <p>
+                {moment(
+                  [
+                    this.state.day6Endtime.split(":")[0],
+                    this.state.day6Endtime.split(":")[1],
+                  ],
+                  "HH:mm"
+                ).diff(
+                  moment(
+                    [
+                      this.state.day6Starttime.split(":")[0],
+                      this.state.day6Starttime.split(":")[1],
+                    ],
+                    "HH:mm"
+                  ),
+                  "hours"
+                )}
+              </p>
+              <p>
+                {moment(
+                  [
+                    this.state.day7Endtime.split(":")[0],
+                    this.state.day7Endtime.split(":")[1],
+                  ],
+                  "HH:mm"
+                ).diff(
+                  moment(
+                    [
+                      this.state.day7Starttime.split(":")[0],
+                      this.state.day7Starttime.split(":")[1],
+                    ],
+                    "HH:mm"
+                  ),
+                  "hours"
+                )}
+              </p>
+            </div>
+            <div className="content flex-align-center">
+              <div className="floating">
+                <p>Floating day</p>
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day1Status == "floating" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day2Status == "floating" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day3Status == "floating" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day4Status == "floating" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day5Status == "floating" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day6Status == "floating" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day7Status == "floating" ? true : false
+                  }
+                />
+              </div>
+              <div className="holiday">
+                <p>Holiday</p>
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day1Status == "holiday" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day2Status == "holiday" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day3Status == "holiday" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day4Status == "holiday" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day5Status == "holiday" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day6Status == "holiday" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day7Status == "holiday" ? true : false
+                  }
+                />
+              </div>
+              <div className="vacation">
+                <p>Vacation</p>
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day1Status == "vacation" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day2Status == "vacation" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day3Status == "vacation" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day4Status == "vacation" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day5Status == "vacation" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day6Status == "vacation" ? true : false
+                  }
+                />
+                <input
+                  type="checkbox"
+                  name="day1status"
+                  defaultChecked={
+                    this.state.day7Status == "vacation" ? true : false
+                  }
+                />
+              </div>
+            </div>
+          </div>
+          <div className="detail-page__form--third flex-align-center">
+            <select>
+              <option>Approved timesheet</option>
+              <option>Unapproved timesheet</option>
+            </select>
+            <input type="file" />
+            <button className="save-button">SAVE</button>
+          </div>
         </form>
       </div>
     );

@@ -3,10 +3,6 @@
   height: 100%;
 
   form {
-    p {
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
     margin-top: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -17,27 +13,69 @@
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%);
-    input {
-      display: block;
-      width: 100%;
-      margin-bottom: 20px;
 
-      border: 1px solid #ced4da;
-      border-radius: 0.25rem;
-      height: 40px;
-      padding: 0.375rem 0.75rem;
+    .detail-page__form--first {
+      justify-content: space-between;
+      p {
+        margin-right: 5px;
+      }
+      input {
+        width: 100px;
+      }
     }
-    button {
-      width: 100%;
-      background-color: $color--blue;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      text-align: center;
-      text-decoration: none;
-      font-size: $size__font--regular;
-      margin-top: 10px;
-      cursor: pointer;
+    .default-button {
+      margin-top: 20px;
+      text-align: right;
+      button {
+        background-color: $color--white;
+        color: $color--blue;
+        border: solid 1px $color--blue;
+        border-radius: 4px;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: 0px;
+        cursor: pointer;
+      }
+    }
+    .detail-page__form--second {
+      margin-top: 20px;
+      justify-content: space-between;
+      p:not(:first-child) {
+        border-top-style: solid;
+      }
+      .content {
+        div {
+          width: 100px;
+        }
+        text-align: center;
+      }
+      .floating,
+      .vacation,
+      .holiday {
+        // text-align: center;
+        input {
+          width: 100px;
+        }
+      }
+    }
+    .detail-page__form--third {
+      margin-top: 20px;
+      button {
+        width: 100px;
+        background-color: $color--white;
+        color: $color--blue;
+        border: solid 1px $color--blue;
+        border-radius: 4px;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        margin-left: auto;
+        margin-right: 0px;
+      }
     }
   }
 }
