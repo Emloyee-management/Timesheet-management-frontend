@@ -17,7 +17,11 @@ type ISummaryPageProps = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
   RouteComponentProps;
 
-const initialState = { userId: "5f407859e111306b4098f4fb" };
+const initialState = {
+  userId: "5f407859e111306b4098f4fb",
+  itemsToShow: 5,
+  expanded: false,
+};
 
 type ISummaryPageState = typeof initialState;
 
@@ -29,20 +33,17 @@ class SummaryPage extends React.Component<
     super(props);
     this.state = initialState;
   }
+
+  showMore = () => {
+    this.state.itemsToShow === 5
+      ? this.setState({ itemsToShow: this.props.summary.summary.length, expanded: true })
+      : this.setState({ itemsToShow: 5, expanded: false });
+  };
   componentDidMount = () => {
     //  this.props.getAllSummary(this.props.session.userInfo.id)
     this.props.getAllSummary(this.state.userId);
   };
 
-
-  Action = (approvalStatus:any) =>{
-    console.log(approvalStatus)
-    if(approvalStatus === 'approved'){
-      return <h3>No Edit</h3>
-    } else {
-      return <h3> Edit, View</h3>
-    }
-  }
   render() {
     // {JSON.stringify(this.props.summary.summary)}
     return (
@@ -60,20 +61,40 @@ class SummaryPage extends React.Component<
               </tr>
             </thead>
             <tbody>
-              {this.props.summary.summary.map((item: ISummaryInfo) => {
-                return (
-                  <tr>
-                    <td>{item.day7}</td>
-                    <td>{item.totalBillingHours}</td>
-                    <td>{item.submissionStatus}</td>
-                    <td>{item.approvalStatus}</td>
-                    {/* <td><this.Action approvalStatus={item.approvalStatus} /></td> */}
-                    <td>{item.comment}</td>
-                  </tr>
-                );
-              })}
+              {this.props.summary.summary
+                .slice(0, this.state.itemsToShow)
+                .map((item: ISummaryInfo) => {
+                  return (
+                    <tr>
+                      <td>{item.day7}</td>
+                      <td>{item.totalBillingHours}</td>
+                      <td>{item.submissionStatus}</td>
+                      <td>{item.approvalStatus}</td>
+                      <td>
+                        {item.approvalStatus === "approved" ? (
+                          <p>View: need be modified. Link to Child Component</p>
+                        ) : (
+                          <p>
+                            Edit, View: need to be modified. Link to Child
+                            Component
+                          </p>
+                        )}
+                      </td>
+                      {/* <td>Edit, View</td> */}
+                      <td>{item.comment}</td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </Table>
+
+          <button onClick={this.showMore}>
+            {this.state.expanded ? (
+              <span>Show less</span>
+            ) : (
+              <span>Show more</span>
+            )}
+          </button>
           <h2>
             Currently, we are using hardcoded UserID. This should be changed
             after Login Feature is enabled. Modify componentDidMount()
