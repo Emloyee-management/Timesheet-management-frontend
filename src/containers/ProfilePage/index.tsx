@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { IStoreState } from "../../store/reducers";
 import { DispatchFunction } from "../../store";
 import { login } from "../../store/actions/session";
+import axios from "axios";
 
 const mapStateToProps = (state: IStoreState) => ({ session: state.session });
 
@@ -23,6 +24,7 @@ const initialState = {
   emergencyContact1Phone: "",
   emergencyContact2: "",
   emergencyContact2Phone: "",
+  newUser: {} as IUserInfo,
 };
 
 type IprofilePageState = typeof initialState;
@@ -98,9 +100,6 @@ class ProfilePage extends React.Component<
 
   handleSubmit = (event: any) => {
     event.preventDefault();
-  };
-
-  componentDidUpdate = () => {
     const newUser = {
       id: this.props.session.userInfo.id,
       username: this.props.session.userInfo.username,
@@ -114,6 +113,59 @@ class ProfilePage extends React.Component<
       emergency2Phone: this.state.emergencyContact2Phone,
       token: this.props.session.userInfo.token,
     } as IUserInfo;
+    axios
+      .post("htttp://localhost:8080/userprofile", newUser, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,OPTIONS",
+          "Access-Control-Allow-Credentials": true,
+          "Access-Control-Allow-Headers":
+            "Content-Type, Authorization, Content-Length, X-Requested-With",
+        },
+      })
+      .then(() => {
+        alert("update succeeded!");
+      })
+      .catch(() => {
+        alert("update failed!");
+      });
+  };
+
+  componentDidUpdate = () => {
+    // this.setState(
+    //   {
+    //     newUser: {
+    //       id: this.props.session.userInfo.id,
+    //       username: this.props.session.userInfo.username,
+    //       password: this.props.session.userInfo.password,
+    //       phone: this.state.phone,
+    //       email: this.state.email,
+    //       address: this.state.address,
+    //       emergency1Name: this.state.emergencyContact1,
+    //       emergency1Phone: this.state.emergencyContact1Phone,
+    //       emergency2Name: this.state.emergencyContact2,
+    //       emergency2Phone: this.state.emergencyContact2Phone,
+    //       token: this.props.session.userInfo.token,
+    //     } as IUserInfo,
+    //   },
+    //   () => {
+    //     console.info(this.state.newUser);
+    //   }
+    // );
+    const newUser = {
+      id: this.props.session.userInfo.id,
+      username: this.props.session.userInfo.username,
+      password: this.props.session.userInfo.password,
+      phone: this.state.phone,
+      email: this.state.email,
+      address: this.state.address,
+      emergency1Name: this.state.emergencyContact1,
+      emergency1Phone: this.state.emergencyContact1Phone,
+      emergency2Name: this.state.emergencyContact2,
+      emergency2Phone: this.state.emergencyContact2Phone,
+      token: this.props.session.userInfo.token,
+    } as IUserInfo;
+    // console.info(newUser);
   };
 
   render() {
