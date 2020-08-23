@@ -21,6 +21,7 @@ const initialState = {
   userId: "5f407859e111306b4098f4fb",
   itemsToShow: 5,
   expanded: false,
+  showBox: false,
 };
 
 type ISummaryPageState = typeof initialState;
@@ -34,9 +35,29 @@ class SummaryPage extends React.Component<
     this.state = initialState;
   }
 
+  handleHoverOver = (
+    id: string,
+    submissionStatus: string,
+    approvalStatus: string
+  ) => {
+    //@ts-ignore
+    (document.getElementById(`${id}`) as HTMLElement).style.display = "block";
+  };
+  handleHoverLeave = (
+    id: string,
+    submissionStatus: string,
+    approvalStatus: string
+  ) => {
+    //@ts-ignore
+    (document.getElementById(`${id}`) as HTMLElement).style.display = "none";
+  };
+
   showMore = () => {
     this.state.itemsToShow === 5
-      ? this.setState({ itemsToShow: this.props.summary.summary.length, expanded: true })
+      ? this.setState({
+          itemsToShow: this.props.summary.summary.length,
+          expanded: true,
+        })
       : this.setState({ itemsToShow: 5, expanded: false });
   };
   componentDidMount = () => {
@@ -63,13 +84,37 @@ class SummaryPage extends React.Component<
             <tbody>
               {this.props.summary.summary
                 .slice(0, this.state.itemsToShow)
-                .map((item: ISummaryInfo) => {
+                .map((item: ISummaryInfo, index: number) => {
                   return (
-                    <tr>
+                    <tr key={index}>
                       <td>{item.day7}</td>
                       <td>{item.totalBillingHours}</td>
                       <td>{item.submissionStatus}</td>
-                      <td>{item.approvalStatus}</td>
+                      <td>
+                        {item.approvalStatus}{" "}
+                        <button
+                          onMouseEnter={() =>
+                            this.handleHoverOver(
+                              item.id,
+                              item.submissionStatus,
+                              item.approvalStatus
+                            )
+                          }
+                          onMouseLeave={() =>
+                            this.handleHoverLeave(
+                              item.id,
+                              item.submissionStatus,
+                              item.approvalStatus
+                            )
+                          }
+                        >
+                          Info
+                        </button>
+                        <p style={{ display: "none" }} id={item.id}>
+                          {item.submissionStatus}
+                        </p>
+                        {/* {this.state.showBox ? " More Information Is Here" : ""} */}
+                      </td>
                       <td>
                         {item.approvalStatus === "approved" ? (
                           <p>View: need be modified. Link to Child Component</p>
@@ -81,7 +126,7 @@ class SummaryPage extends React.Component<
                         )}
                       </td>
                       {/* <td>Edit, View</td> */}
-                      <td>{item.comment}</td>
+                      <td>{item.comment} </td>
                     </tr>
                   );
                 })}
