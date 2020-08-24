@@ -19,6 +19,7 @@ const mapDispatchToProps = (dispatch: DispatchFunction) =>
 
 type ISummaryPageProps = {
   handleSelect: (activedTab: string | null) => void;
+  handleStatus: (status: string, timesheet: ISummaryInfo) => void;
 } & ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
   RouteComponentProps;
@@ -83,6 +84,7 @@ class SummaryPage extends React.Component<
 
   private handleRedirectTimesheet = (type: string, timesheet: ISummaryInfo) => {
     this.props.handleSelect("timesheet");
+    this.props.handleStatus(type, timesheet);
   };
 
   private Comment = (props: any) => {

@@ -22,6 +22,8 @@ type IHomePageProps = ReturnType<typeof mapStateToProps> &
 
 const initialState = {
   activeTab: "summary" as string | null,
+  status: "",
+  timesheet: {} as ISummaryInfo,
 };
 
 type IHomePageState = typeof initialState;
@@ -38,15 +40,27 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
     });
   };
 
+  private handleTimesheetStatus = (type: string, timesheet: ISummaryInfo) => {
+    this.setState({ status: type, timesheet: timesheet });
+  };
+
   render() {
     return (
       <div className="home-page__container">
         <Tabs activeKey={this.state.activeTab} onSelect={this.handleSelect}>
           <Tab eventKey="summary" title="Summary">
-            <SummaryPage handleSelect={() => this.handleSelect("timesheet")} />
+            <SummaryPage
+              handleSelect={(tab: string | null) => this.handleSelect(tab)}
+              handleStatus={(status: string, timesheet: ISummaryInfo) =>
+                this.handleTimesheetStatus(status, timesheet)
+              }
+            />
           </Tab>
           <Tab eventKey="timesheet" title="Timesheet">
-            <DetailPage />
+            <DetailPage
+              status={this.state.status}
+              timesheet={this.state.timesheet}
+            />
           </Tab>
           <Tab eventKey="profile" title="Profile">
             <ProfilePage />

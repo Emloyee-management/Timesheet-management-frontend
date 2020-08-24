@@ -11,7 +11,10 @@ const mapStateToProps = (state: IStoreState) => ({ session: state.session });
 const mapDispatchToProps = (dispatch: DispatchFunction) =>
   bindActionCreators({}, dispatch);
 
-type IDetailPageProps = ReturnType<typeof mapStateToProps> &
+type IDetailPageProps = {
+  status: string;
+  timesheet: ISummaryInfo;
+} & ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
   RouteComponentProps;
 
@@ -62,7 +65,9 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
   }
 
   componentDidMount = () => {
-    this.setState({});
+    console.info("yoyo");
+    console.info(this.props.timesheet);
+    console.info(this.props.status);
   };
 
   private getDay = (num: number) => {
@@ -95,7 +100,7 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
   private handleWeekEndingChange = (
     event: React.FormEvent<HTMLInputElement>
   ) => {
-    console.info(moment(event.currentTarget.value).day());
+    // console.info(moment(event.currentTarget.value).day());
     // if (moment(event.currentTarget.value).day() === 6) {
     this.setState({
       day7: event.currentTarget.value,
@@ -178,7 +183,6 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
   };
   private handleDay1Status = (event: React.FormEvent<HTMLInputElement>) => {
     this.setState({ day1Status: event.currentTarget.value });
-    console.info(event.currentTarget.value);
   };
   private handleDay2Status = (event: React.FormEvent<HTMLInputElement>) => {
     this.setState({ day2Status: event.currentTarget.value });
@@ -257,7 +261,7 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
   };
 
   componentDidUpdate = () => {
-    console.info(this.state);
+    // console.info(this.state);
   };
 
   render() {
