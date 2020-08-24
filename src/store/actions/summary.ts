@@ -2,6 +2,7 @@ import { Action, ActionCreator, AnyAction } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { IStoreState } from "../reducers";
 import axios, { AxiosResponse } from "axios";
+import { baseUrl } from "src/App";
 
 export enum SummaryActionType {
   UPDATE_SUMMARY_INFO = "UPDATE_SUMMARY_INFO",
@@ -15,10 +16,12 @@ export type SummaryAsyncAction = ThunkAction<
   AnyAction
 >;
 
-  //getAllSummaryInfo dispatch function
-const updateSummaryInfo: ActionCreator<SummaryAction> = (summary: ISummaryInfo[]) => ({
+//getAllSummaryInfo dispatch function
+const updateSummaryInfo: ActionCreator<SummaryAction> = (
+  summary: ISummaryInfo[]
+) => ({
   type: SummaryActionType.UPDATE_SUMMARY_INFO,
-  payload: { summary},
+  payload: { summary },
 });
 
 export const getAllSummary: ActionCreator<ThunkAction<
@@ -29,13 +32,11 @@ export const getAllSummary: ActionCreator<ThunkAction<
 >> = (userId: string) => {
   return async (dispatch) => {
     // await ApiClient.auth.loginWithPhoneAndCode(phone, code);
-    await axios.get(`http://localhost:8080/timesheet/${userId}`)
-    .then((res:AxiosResponse) => {
-      console.log(res.data);
-      dispatch(updateSummaryInfo( res.data  as ISummaryInfo[]));
-      
-    })
+    await axios
+      .get(`${baseUrl}/view-time-sheet-service/timesheet/${userId}`)
+      .then((res: AxiosResponse) => {
+        console.log(res.data);
+        dispatch(updateSummaryInfo(res.data as ISummaryInfo[]));
+      });
   };
 };
-
-

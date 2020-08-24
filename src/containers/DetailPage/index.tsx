@@ -197,6 +197,18 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
     this.setState({ day7Status: event.currentTarget.value });
   };
 
+  private handleBillingHours = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ totalBillingHours: parseInt(event.currentTarget.value) });
+  };
+
+  private handleCompensatedHours = (
+    event: React.FormEvent<HTMLInputElement>
+  ) => {
+    this.setState({
+      totalCompensatedHours: parseInt(event.currentTarget.value),
+    });
+  };
+
   private setDefault = () => {
     this.setState({
       totalBillingHours: 0,
@@ -232,8 +244,14 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
     });
   };
 
-  handleSubmit = (event: any) => {
+  private handleSubmit = (event: any) => {
     event.preventDefault();
+    if (moment(this.state.day7).day() !== 6) {
+      alert("End day must be Saturday!");
+      return;
+    } else {
+      console.info(this.state);
+    }
   };
 
   componentDidUpdate = () => {
@@ -256,11 +274,19 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
             </div>
             <div className="flex-align-center">
               <p>Total billing hours</p>
-              <input type="text" defaultValue={this.state.totalBillingHours} />
+              <input
+                type="text"
+                defaultValue={this.state.totalBillingHours}
+                onChange={this.handleBillingHours}
+              />
             </div>
             <div className="flex-align-center">
               <p>Total Compensated Hours</p>
-              <input type="text" defaultValue={this.state.totalBillingHours} />
+              <input
+                type="text"
+                defaultValue={this.state.totalBillingHours}
+                onChange={this.handleCompensatedHours}
+              />
             </div>
           </div>
           <div className="default-button">
@@ -799,8 +825,10 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
               <option>Unapproved timesheet</option>
             </select>
             <input type="file" />
-            {/* <button className="save-button">CANCEL</button> */}
-            <button className="save-button">SAVE</button>
+            <div className="save-button">
+              <button>CANCEL</button>
+              <button>SAVE</button>
+            </div>
           </div>
         </form>
       </div>
