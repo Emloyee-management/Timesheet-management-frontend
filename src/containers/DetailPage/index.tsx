@@ -4,14 +4,12 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { IStoreState } from "../../store/reducers";
 import { DispatchFunction } from "../../store";
-import Moment from "moment";
-import { login } from "../../store/actions/session";
 import moment from "moment";
 
 const mapStateToProps = (state: IStoreState) => ({ session: state.session });
 
 const mapDispatchToProps = (dispatch: DispatchFunction) =>
-  bindActionCreators({ login }, dispatch);
+  bindActionCreators({}, dispatch);
 
 type IDetailPageProps = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
@@ -19,7 +17,6 @@ type IDetailPageProps = ReturnType<typeof mapStateToProps> &
 
 const initialState = {
   id: "5f42d82260458405d2e42980",
-
   userId: "5f407859e111306b4098f4fb",
   totalBillingHours: 32,
   totalCompensatedHours: 40,
@@ -278,49 +275,49 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day1Status == "floating" ? true : false
+                    this.state.day1Status === "floating" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day2Status == "floating" ? true : false
+                    this.state.day2Status === "floating" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day3Status == "floating" ? true : false
+                    this.state.day3Status === "floating" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day4Status == "floating" ? true : false
+                    this.state.day4Status === "floating" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day5Status == "floating" ? true : false
+                    this.state.day5Status === "floating" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day6Status == "floating" ? true : false
+                    this.state.day6Status === "floating" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day7Status == "floating" ? true : false
+                    this.state.day7Status === "floating" ? true : false
                   }
                 />
               </div>
@@ -330,49 +327,49 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day1Status == "holiday" ? true : false
+                    this.state.day1Status === "holiday" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day2Status == "holiday" ? true : false
+                    this.state.day2Status === "holiday" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day3Status == "holiday" ? true : false
+                    this.state.day3Status === "holiday" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day4Status == "holiday" ? true : false
+                    this.state.day4Status === "holiday" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day5Status == "holiday" ? true : false
+                    this.state.day5Status === "holiday" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day6Status == "holiday" ? true : false
+                    this.state.day6Status === "holiday" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day7Status == "holiday" ? true : false
+                    this.state.day7Status === "holiday" ? true : false
                   }
                 />
               </div>
@@ -382,49 +379,49 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day1Status == "vacation" ? true : false
+                    this.state.day1Status === "vacation" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day2Status == "vacation" ? true : false
+                    this.state.day2Status === "vacation" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day3Status == "vacation" ? true : false
+                    this.state.day3Status === "vacation" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day4Status == "vacation" ? true : false
+                    this.state.day4Status === "vacation" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day5Status == "vacation" ? true : false
+                    this.state.day5Status === "vacation" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day6Status == "vacation" ? true : false
+                    this.state.day6Status === "vacation" ? true : false
                   }
                 />
                 <input
                   type="checkbox"
                   name="day1status"
                   defaultChecked={
-                    this.state.day7Status == "vacation" ? true : false
+                    this.state.day7Status === "vacation" ? true : false
                   }
                 />
               </div>
