@@ -51,25 +51,25 @@ class ProfilePage extends React.Component<
     });
   };
 
-  handlePhoneChange = (event: React.FormEvent<HTMLInputElement>) => {
+  private handlePhoneChange = (event: React.FormEvent<HTMLInputElement>) => {
     this.setState({
       phone: event.currentTarget.value,
     });
   };
 
-  handleEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
+  private handleEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
     this.setState({
       email: event.currentTarget.value,
     });
   };
 
-  handleAddressChange = (event: React.FormEvent<HTMLInputElement>) => {
+  private handleAddressChange = (event: React.FormEvent<HTMLInputElement>) => {
     this.setState({
       address: event.currentTarget.value,
     });
   };
 
-  handleEmergencyContact1Change = (
+  private handleEmergencyContact1Change = (
     event: React.FormEvent<HTMLInputElement>
   ) => {
     this.setState({
@@ -77,21 +77,21 @@ class ProfilePage extends React.Component<
     });
   };
 
-  handleEmergencyContact1PhoneChange = (
+  private handleEmergencyContact1PhoneChange = (
     event: React.FormEvent<HTMLInputElement>
   ) => {
     this.setState({
       emergencyContact1Phone: event.currentTarget.value,
     });
   };
-  handleEmergencyContact2Change = (
+  private handleEmergencyContact2Change = (
     event: React.FormEvent<HTMLInputElement>
   ) => {
     this.setState({
       emergencyContact2: event.currentTarget.value,
     });
   };
-  handleEmergencyContact2PhoneChange = (
+  private handleEmergencyContact2PhoneChange = (
     event: React.FormEvent<HTMLInputElement>
   ) => {
     this.setState({
@@ -99,7 +99,7 @@ class ProfilePage extends React.Component<
     });
   };
 
-  handleSubmit = (event: any) => {
+  private handleSubmit = (event: any) => {
     event.preventDefault();
     const newUser = {
       id: this.props.session.userInfo.id,

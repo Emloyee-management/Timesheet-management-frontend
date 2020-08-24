@@ -44,27 +44,25 @@ export const login: ActionCreator<SessionAsyncAction<boolean>> = (
   };
 };
 
-  //getAllSummaryInfo dispatch function
-const updateSummaryInfo: ActionCreator<SessionAction> = (summary: ISummaryInfo) => ({
-  type: SessionActionType.UPDATE_SUMMARY_INFO,
-  payload: {summary},
-});
+//getAllSummaryInfo dispatch function
+// const updateSummaryInfo: ActionCreator<SessionAction> = (summary: ISummaryInfo) => ({
+//   type: SessionActionType.UPDATE_SUMMARY_INFO,
+//   payload: {summary},
+// });
 
-export const getAllSummary: ActionCreator<ThunkAction<
-  Promise<void>,
-  IStoreState,
-  null,
-  SessionAction
->> = (userId: string) => {
-  return async (dispatch) => {
-    // await ApiClient.auth.loginWithPhoneAndCode(phone, code);
-    await axios.get(`http://localhost:8080/timesheet/${userId}`)
-    .then((res:AxiosResponse) => {
-      console.log(res.data);
-      dispatch(updateSummaryInfo( res.data  as ISummaryInfo[]));
-      
-    })
-  };
-};
+// export const getAllSummary: ActionCreator<ThunkAction<
+//   Promise<void>,
+//   IStoreState,
+//   null,
+//   SessionAction
+// >> = (userId: string) => {
+//   return async (dispatch) => {
+//     // await ApiClient.auth.loginWithPhoneAndCode(phone, code);
+//     await axios.get(`http://localhost:8080/timesheet/${userId}`)
+//     .then((res:AxiosResponse) => {
+//       console.log(res.data);
+//       dispatch(updateSummaryInfo( res.data  as ISummaryInfo[]));
 
-
+//     })
+//   };
+// };

@@ -5,37 +5,9 @@ import { bindActionCreators } from "redux";
 import { IStoreState } from "../../store/reducers";
 import { DispatchFunction } from "../../store";
 import { getAllSummary } from "../../store/actions/summary";
-import { table } from "console";
+
 import { Table } from "react-bootstrap";
 import infoTag from "../../assets/infoTag.png";
-
-{
-  /* <button
-onMouseEnter={() =>
-  this.handleHoverOver(
-    item.id,
-    item.submissionStatus,
-    item.approvalStatus
-  )
-}
-onMouseLeave={() =>
-  this.handleHoverLeave(
-    item.id,
-    item.submissionStatus,
-    item.approvalStatus
-  )
-}
->
-Info
-</button>
-<p style={{ display: "none" }} id={item.id}>
-{item.submissionStatus === "Incomplete" ? (
-  <p>‘Items due: Proof of Approved TimeSheet’</p>
-) : (
-  <p></p>
-)}
-</p> */
-}
 
 const mapStateToProps = (state: IStoreState) => ({ summary: state.summary });
 
