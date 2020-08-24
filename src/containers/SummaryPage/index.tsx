@@ -7,6 +7,36 @@ import { DispatchFunction } from "../../store";
 import { getAllSummary } from "../../store/actions/summary";
 import { table } from "console";
 import { Table } from "react-bootstrap";
+import infoTag from "../../assets/infoTag.png";
+
+{
+  /* <button
+onMouseEnter={() =>
+  this.handleHoverOver(
+    item.id,
+    item.submissionStatus,
+    item.approvalStatus
+  )
+}
+onMouseLeave={() =>
+  this.handleHoverLeave(
+    item.id,
+    item.submissionStatus,
+    item.approvalStatus
+  )
+}
+>
+Info
+</button>
+<p style={{ display: "none" }} id={item.id}>
+{item.submissionStatus === "Incomplete" ? (
+  <p>‘Items due: Proof of Approved TimeSheet’</p>
+) : (
+  <p></p>
+)}
+</p> */
+}
+
 const mapStateToProps = (state: IStoreState) => ({ summary: state.summary });
 
 const mapDispatchToProps = (dispatch: DispatchFunction) =>
@@ -35,21 +65,21 @@ class SummaryPage extends React.Component<
     this.state = initialState;
   }
 
-  handleHoverOver = (
-    id: string,
-    submissionStatus: string,
-    approvalStatus: string
-  ) => {
+  handleHoverOver = (id: string) => {
     //@ts-ignore
     (document.getElementById(`${id}`) as HTMLElement).style.display = "block";
   };
-  handleHoverLeave = (
-    id: string,
-    submissionStatus: string,
-    approvalStatus: string
-  ) => {
+
+  handleHoverLeave = (id: string) => {
     //@ts-ignore
     (document.getElementById(`${id}`) as HTMLElement).style.display = "none";
+  };
+
+  handleButton = (submissionStatus: string, id: string) => {
+    //@ts-ignore
+    if (submissionStatus === "Incomplete") {
+      (document.getElementById(`${id}`) as HTMLElement).style.display = "block";
+    }
   };
 
   showMore = () => {
@@ -63,6 +93,20 @@ class SummaryPage extends React.Component<
   componentDidMount = () => {
     //  this.props.getAllSummary(this.props.session.userInfo.id)
     this.props.getAllSummary(this.state.userId);
+  };
+
+  SubmissionStatusinfoTag = (props: any) => {
+    return (
+      <p>
+        {props.submissionStatus === "Incomplete" ? (
+          <p>Items due: Proof of Approved TimeSheet</p>
+        ) : props.approvalStatus === "unapproved" ? (
+          <p>Approval denied by Admin, please contact your HR manager</p>
+        ) : (
+          <p> </p>
+        )}
+      </p>
+    );
   };
 
   render() {
@@ -89,43 +133,29 @@ class SummaryPage extends React.Component<
                     <tr key={index}>
                       <td>{item.day7}</td>
                       <td>{item.totalBillingHours}</td>
-                      <td>{item.submissionStatus}</td>
                       <td>
-                        {item.approvalStatus}{" "}
-                        <button
-                          onMouseEnter={() =>
-                            this.handleHoverOver(
-                              item.id,
-                              item.submissionStatus,
-                              item.approvalStatus
-                            )
-                          }
-                          onMouseLeave={() =>
-                            this.handleHoverLeave(
-                              item.id,
-                              item.submissionStatus,
-                              item.approvalStatus
-                            )
-                          }
-                        >
-                          Info
-                        </button>
+                        {item.submissionStatus}{" "}
+                        <img
+                          src={infoTag}
+                          onMouseEnter={() => this.handleHoverOver(item.id)}
+                          onMouseLeave={() => this.handleHoverLeave(item.id)}
+                        />
                         <p style={{ display: "none" }} id={item.id}>
-                          {item.submissionStatus}
+                          <this.SubmissionStatusinfoTag
+                            submissionStatus={item.submissionStatus}
+                            approvalStatus={item.approvalStatus}
+                          />
                         </p>
-                        {/* {this.state.showBox ? " More Information Is Here" : ""} */}
                       </td>
+
+                      <td>{item.approvalStatus}</td>
                       <td>
                         {item.approvalStatus === "approved" ? (
-                          <p>View: need be modified. Link to Child Component</p>
+                          <p>View</p>
                         ) : (
-                          <p>
-                            Edit, View: need to be modified. Link to Child
-                            Component
-                          </p>
+                          <p>Edit | View</p>
                         )}
                       </td>
-                      {/* <td>Edit, View</td> */}
                       <td>{item.comment} </td>
                     </tr>
                   );
@@ -142,7 +172,7 @@ class SummaryPage extends React.Component<
           </button>
           <h2>
             Currently, we are using hardcoded UserID. This should be changed
-            after Login Feature is enabled. Modify componentDidMount()
+            after Login Feature is enabled. Check componentDidMount()
           </h2>
         </div>
       </>
