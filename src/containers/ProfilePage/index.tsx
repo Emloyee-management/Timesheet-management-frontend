@@ -4,14 +4,14 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { IStoreState } from "../../store/reducers";
 import { DispatchFunction } from "../../store";
-import { login } from "../../store/actions/session";
+import { updateUserInfo } from "../../store/actions/session";
 import axios from "axios";
 import { baseUrl } from "src/App";
 
 const mapStateToProps = (state: IStoreState) => ({ session: state.session });
 
 const mapDispatchToProps = (dispatch: DispatchFunction) =>
-  bindActionCreators({ login }, dispatch);
+  bindActionCreators({ updateUserInfo }, dispatch);
 
 type IprofilePageProps = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
@@ -115,9 +115,10 @@ class ProfilePage extends React.Component<
       token: this.props.session.userInfo.token,
     } as IUserInfo;
     axios
-      .post(`${baseUrl}/userprofile`, newUser)
+      .post(`${baseUrl}/personal-info-service/userprofile`, newUser)
       .then(() => {
         alert("update succeeded!");
+        this.props.updateUserInfo(newUser);
       })
       .catch(() => {
         alert("update failed!");
@@ -129,6 +130,7 @@ class ProfilePage extends React.Component<
   render() {
     return (
       <div className="profile-page__container">
+        {/* {JSON.stringify(this.props.session.userInfo)} */}
         <form onSubmit={this.handleSubmit}>
           <p>Contact</p>
           <input

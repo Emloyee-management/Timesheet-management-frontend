@@ -9,13 +9,17 @@ import { getAllSummary } from "../../store/actions/summary";
 import { Table } from "react-bootstrap";
 import infoTag from "../../assets/infoTag.png";
 
-const mapStateToProps = (state: IStoreState) => ({ summary: state.summary });
+const mapStateToProps = (state: IStoreState) => ({
+  summary: state.summary,
+  session: state.session,
+});
 
 const mapDispatchToProps = (dispatch: DispatchFunction) =>
   bindActionCreators({ getAllSummary }, dispatch);
-// bindActionCreators({ getAllSummary }, dispatch);
 
-type ISummaryPageProps = ReturnType<typeof mapStateToProps> &
+type ISummaryPageProps = {
+  handleSelect: (activedTab: string | null) => void;
+} & ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
   RouteComponentProps;
 
@@ -37,24 +41,21 @@ class SummaryPage extends React.Component<
     this.state = initialState;
   }
 
-  handleHoverOver = (id: string) => {
-    //@ts-ignore
+  private handleHoverOver = (id: string) => {
     (document.getElementById(`${id}`) as HTMLElement).style.display = "block";
   };
 
-  handleHoverLeave = (id: string) => {
-    //@ts-ignore
+  private handleHoverLeave = (id: string) => {
     (document.getElementById(`${id}`) as HTMLElement).style.display = "none";
   };
 
-  handleButton = (submissionStatus: string, id: string) => {
-    //@ts-ignore
+  private handleButton = (submissionStatus: string, id: string) => {
     if (submissionStatus === "Incomplete") {
       (document.getElementById(`${id}`) as HTMLElement).style.display = "block";
     }
   };
 
-  showMore = () => {
+  private showMore = () => {
     this.state.itemsToShow === 5
       ? this.setState({
           itemsToShow: this.props.summary.summary.length,
@@ -63,25 +64,28 @@ class SummaryPage extends React.Component<
       : this.setState({ itemsToShow: 5, expanded: false });
   };
   componentDidMount = () => {
-    //  this.props.getAllSummary(this.props.session.userInfo.id)
-    this.props.getAllSummary(this.state.userId);
+    this.props.getAllSummary(this.props.session.userInfo.id);
   };
 
-  SubmissionStatusinfoTag = (props: any) => {
+  private SubmissionStatusinfoTag = (props: any) => {
     return (
-      <p>
+      <>
         {props.submissionStatus === "Incomplete" ? (
           <p>Items due: Proof of Approved TimeSheet</p>
         ) : props.approvalStatus === "unapproved" ? (
           <p>Approval denied by Admin, please contact your HR manager</p>
         ) : (
-          <p> </p>
+          <> </>
         )}
-      </p>
+      </>
     );
   };
 
-  Comment = (props: any) => {
+  private handleRedirectTimesheet = (type: string, timesheet: ISummaryInfo) => {
+    this.props.handleSelect("timesheet");
+  };
+
+  private Comment = (props: any) => {
     let floating = 0;
     let holiday = 0;
     let vacation = 0;
@@ -97,31 +101,22 @@ class SummaryPage extends React.Component<
     });
 
     return (
-      <p>
-        {floating > 0 ? (
-          <p> '{floating}' floating day(s) required </p>
-        ) : (
-          <p></p>
-        )}
-        {vacation > 0 ? (
-          <p> '{vacation}' vacation day(s) required </p>
-        ) : (
-          <p></p>
-        )}
+      <>
+        {floating > 0 ? <p> '{floating}' floating day(s) required </p> : <></>}
+        {vacation > 0 ? <p> '{vacation}' vacation day(s) required </p> : <></>}
         {holiday > 0 ? (
           <p> '{holiday}' holiday day(s) were included </p>
         ) : (
-          <p></p>
+          <></>
         )}
-      </p>
+      </>
     );
   };
 
   render() {
-    // {JSON.stringify(this.props.summary.summary)}
     return (
       <div className="summary-page__container">
-        <Table striped bordered hover>
+        <Table className="summary-page__table" striped bordered hover>
           <thead>
             <tr>
               <th>WeekEnding</th>
@@ -141,30 +136,41 @@ class SummaryPage extends React.Component<
                     <td>{item.day7}</td>
                     <td>{item.totalBillingHours}</td>
                     <td>
-                      {item.submissionStatus}{" "}
+                      {item.submissionStatus}
                       <img
                         src={infoTag}
                         onMouseEnter={() => this.handleHoverOver(item.id)}
                         onMouseLeave={() => this.handleHoverLeave(item.id)}
                       />
-                      <p style={{ display: "none" }} id={item.id}>
+                      <div style={{ display: "none" }} id={item.id}>
                         <this.SubmissionStatusinfoTag
                           submissionStatus={item.submissionStatus}
                           approvalStatus={item.approvalStatus}
                         />
-                      </p>
+                      </div>
                     </td>
 
                     <td>{item.approvalStatus}</td>
-                    <td>
+                    <td className="view-tag">
                       {item.approvalStatus === "approved" ? (
-                        <p>View</p>
+                        <p
+                          onClick={() =>
+                            this.handleRedirectTimesheet("view", item)
+                          }
+                        >
+                          View
+                        </p>
                       ) : (
-                        <p>Edit | View</p>
+                        <p
+                          onClick={() =>
+                            this.handleRedirectTimesheet("edit", item)
+                          }
+                        >
+                          Edit
+                        </p>
                       )}
                     </td>
                     <td>
-                      {/* {item.comment} */}
                       <this.Comment
                         weeklyStatus={[
                           item.day1Status,
@@ -189,10 +195,6 @@ class SummaryPage extends React.Component<
             )}
           </button>
         </div>
-        <h2>
-          Currently, we are using hardcoded UserID. This should be changed after
-          Login Feature is enabled. Check componentDidMount()
-        </h2>
       </div>
     );
   }

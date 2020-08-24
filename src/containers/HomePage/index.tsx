@@ -6,9 +6,10 @@ import { IStoreState } from "../../store/reducers";
 import { DispatchFunction } from "../../store";
 import { login } from "../../store/actions/session";
 import { Tabs, Tab } from "react-bootstrap";
-import TemplatePage from "../TemplatePage";
+
 import SummaryPage from "../SummaryPage";
 import ProfilePage from "../ProfilePage";
+import DetailPage from "../DetailPage";
 
 const mapStateToProps = (state: IStoreState) => ({ session: state.session });
 
@@ -31,9 +32,7 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
     this.state = initialState;
   }
 
-  handleSelect = (selectedTab: string | null) => {
-    // The active tab must be set into the state so that
-    // the Tabs component knows about the change and re-renders.
+  private handleSelect = (selectedTab: string | null) => {
     this.setState({
       activeTab: selectedTab,
     });
@@ -44,13 +43,11 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
       <div className="home-page__container">
         <Tabs activeKey={this.state.activeTab} onSelect={this.handleSelect}>
           <Tab eventKey="summary" title="Summary">
-            <SummaryPage />
+            <SummaryPage handleSelect={() => this.handleSelect("timesheet")} />
           </Tab>
           <Tab eventKey="timesheet" title="Timesheet">
-            Timesheet Tab. Go to HomePage/index.tsx and change this into a
-            custom Component.
+            <DetailPage />
           </Tab>
-
           <Tab eventKey="profile" title="Profile">
             <ProfilePage />
           </Tab>

@@ -92,7 +92,9 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
     }
   };
 
-  handleWeekEndingChange = (event: React.FormEvent<HTMLInputElement>) => {
+  private handleWeekEndingChange = (
+    event: React.FormEvent<HTMLInputElement>
+  ) => {
     console.info(moment(event.currentTarget.value).day());
     // if (moment(event.currentTarget.value).day() === 6) {
     this.setState({
