@@ -148,68 +148,67 @@ class SummaryPage extends React.Component<
   render() {
     // {JSON.stringify(this.props.summary.summary)}
     return (
-      <>
-        <div>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>WeekEnding</th>
-                <th>Total Hours</th>
-                <th>Submission Status</th>
-                <th>Approval Status</th>
-                <th>Option</th>
-                <th>Comment</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.props.summary.summary
-                .slice(0, this.state.itemsToShow)
-                .map((item: ISummaryInfo, index: number) => {
-                  return (
-                    <tr key={index}>
-                      <td>{item.day7}</td>
-                      <td>{item.totalBillingHours}</td>
-                      <td>
-                        {item.submissionStatus}{" "}
-                        <img
-                          src={infoTag}
-                          onMouseEnter={() => this.handleHoverOver(item.id)}
-                          onMouseLeave={() => this.handleHoverLeave(item.id)}
+      <div className="summary-page__container">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>WeekEnding</th>
+              <th>Total Hours</th>
+              <th>Submission Status</th>
+              <th>Approval Status</th>
+              <th>Option</th>
+              <th>Comment</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.props.summary.summary
+              .slice(0, this.state.itemsToShow)
+              .map((item: ISummaryInfo, index: number) => {
+                return (
+                  <tr key={index}>
+                    <td>{item.day7}</td>
+                    <td>{item.totalBillingHours}</td>
+                    <td>
+                      {item.submissionStatus}{" "}
+                      <img
+                        src={infoTag}
+                        onMouseEnter={() => this.handleHoverOver(item.id)}
+                        onMouseLeave={() => this.handleHoverLeave(item.id)}
+                      />
+                      <p style={{ display: "none" }} id={item.id}>
+                        <this.SubmissionStatusinfoTag
+                          submissionStatus={item.submissionStatus}
+                          approvalStatus={item.approvalStatus}
                         />
-                        <p style={{ display: "none" }} id={item.id}>
-                          <this.SubmissionStatusinfoTag
-                            submissionStatus={item.submissionStatus}
-                            approvalStatus={item.approvalStatus}
-                          />
-                        </p>
-                      </td>
+                      </p>
+                    </td>
 
-                      <td>{item.approvalStatus}</td>
-                      <td>
-                        {item.approvalStatus === "approved" ? (
-                          <p>View</p>
-                        ) : (
-                          <p>Edit | View</p>
-                        )}
-                      </td>
-                      <td>
-                        {/* {item.comment} */}
-                        <this.Comment
-                          weeklyStatus={[
-                            item.day1Status,
-                            item.day2Status,
-                            item.day3Status,
-                            item.day4Status,
-                            item.day5Status,
-                          ]}
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </Table>
-
+                    <td>{item.approvalStatus}</td>
+                    <td>
+                      {item.approvalStatus === "approved" ? (
+                        <p>View</p>
+                      ) : (
+                        <p>Edit | View</p>
+                      )}
+                    </td>
+                    <td>
+                      {/* {item.comment} */}
+                      <this.Comment
+                        weeklyStatus={[
+                          item.day1Status,
+                          item.day2Status,
+                          item.day3Status,
+                          item.day4Status,
+                          item.day5Status,
+                        ]}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </Table>
+        <div className="show-button">
           <button onClick={this.showMore}>
             {this.state.expanded ? (
               <span>Show less</span>
@@ -217,12 +216,12 @@ class SummaryPage extends React.Component<
               <span>Show more</span>
             )}
           </button>
-          <h2>
-            Currently, we are using hardcoded UserID. This should be changed
-            after Login Feature is enabled. Check componentDidMount()
-          </h2>
         </div>
-      </>
+        <h2>
+          Currently, we are using hardcoded UserID. This should be changed after
+          Login Feature is enabled. Check componentDidMount()
+        </h2>
+      </div>
     );
   }
 }
