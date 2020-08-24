@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import "~bootstrap/scss/bootstrap";
 
 $size__font--large: 36px;
 $size__font--regular: 18px;
@@ -86,3 +87,7 @@ p {
     color: $color--grey--light;
   }
 }
+
+@import "./containers/LoginPage/style.scss";
+@import "./containers/HomePage/style.scss";
+@import "./containers/SummaryPage/style.scss";
