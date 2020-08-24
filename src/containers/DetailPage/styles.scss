@@ -7,7 +7,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding: 30px;
-    width: 80%;
+    width: 60%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -20,7 +20,7 @@
         margin-right: 5px;
       }
       input {
-        width: 100px;
+        width: 150px;
       }
     }
     .default-button {
@@ -48,10 +48,25 @@
       }
       .content {
         div {
+          // height: 300px;
           width: 100px;
         }
         text-align: center;
       }
+      .options-content {
+        p {
+          border-top-style: none;
+          margin-right: 10px;
+        }
+        .options {
+          // justify-content: space-between;
+          input {
+            margin: 0 auto;
+            margin-bottom: 10px;
+          }
+        }
+      }
+
       .floating,
       .vacation,
       .holiday {

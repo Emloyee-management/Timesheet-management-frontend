@@ -22,32 +22,32 @@ const initialState = {
   totalCompensatedHours: 40,
   submissionStatus: "Incomplete",
   approvalStatus: "approved",
-  day1: "03/25/2018",
-  day1Starttime: "9:00",
+  day1: "2018-03-25",
+  day1Starttime: "09:00",
   day1Endtime: "18:00",
   day1Status: "floating",
-  day2: "03/26/2018",
-  day2Starttime: "9:00",
+  day2: "2018-03-26",
+  day2Starttime: "09:00",
   day2Endtime: "18:00",
   day2Status: "",
-  day3: "03/27/2018",
-  day3Starttime: "9:00",
+  day3: "2018-03-27",
+  day3Starttime: "09:00",
   day3Endtime: "18:00",
   day3Status: "",
-  day4: "03/28/2018",
-  day4Starttime: "9:00",
+  day4: "2018-03-28",
+  day4Starttime: "09:00",
   day4Endtime: "18:00",
   day4Status: "",
-  day5: "03/29/2018",
-  day5Starttime: "9:00",
+  day5: "2018-03-29",
+  day5Starttime: "09:00",
   day5Endtime: "18:00",
   day5Status: "",
-  day6: "03/30/2018",
-  day6Starttime: "9:00",
+  day6: "2018-03-30",
+  day6Starttime: "09:00",
   day6Endtime: "18:00",
   day6Status: "",
-  day7: "03/31/2018",
-  day7Starttime: "9:00",
+  day7: "2018-03-31",
+  day7Starttime: "09:00",
   day7Endtime: "18:00",
   day7Status: "",
   comment: "sucks",
@@ -65,7 +65,119 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
     this.setState({});
   };
 
-  handlePhoneChange = (event: React.FormEvent<HTMLInputElement>) => {};
+  private getDay = (num: number) => {
+    switch (num) {
+      case 0:
+        return "Sunday";
+      case 1:
+        return "Monday";
+
+      case 2:
+        return "Tuesday";
+
+      case 3:
+        return "Wednesday";
+
+      case 4:
+        return "Thursday";
+
+      case 5:
+        return "Friday";
+
+      case 6:
+        return "Saturday";
+
+      default:
+        return "";
+    }
+  };
+
+  handleWeekEndingChange = (event: React.FormEvent<HTMLInputElement>) => {
+    console.info(moment(event.currentTarget.value).day());
+    // if (moment(event.currentTarget.value).day() === 6) {
+    this.setState({
+      day7: event.currentTarget.value,
+      day6: moment(event.currentTarget.value)
+        .subtract(1, "days")
+        .format("YYYY-MM-DD")
+        .toString(),
+      day5: moment(event.currentTarget.value)
+        .subtract(2, "days")
+        .format("YYYY-MM-DD")
+        .toString(),
+      day4: moment(event.currentTarget.value)
+        .subtract(3, "days")
+        .format("YYYY-MM-DD")
+        .toString(),
+      day3: moment(event.currentTarget.value)
+        .subtract(4, "days")
+        .format("YYYY-MM-DD")
+        .toString(),
+      day2: moment(event.currentTarget.value)
+        .subtract(5, "days")
+        .format("YYYY-MM-DD")
+        .toString(),
+      day1: moment(event.currentTarget.value)
+        .subtract(6, "days")
+        .format("YYYY-MM-DD")
+        .toString(),
+    });
+    // }
+    // else {
+    //   alert("Weekend day should be Saturday!");
+    //   return;
+    // }
+  };
+
+  private handleDay1StartTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day1Starttime: event.currentTarget.value });
+  };
+
+  private handleDay2StartTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day2Starttime: event.currentTarget.value });
+  };
+  private handleDay3StartTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day3Starttime: event.currentTarget.value });
+  };
+  private handleDay4StartTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day4Starttime: event.currentTarget.value });
+  };
+  private handleDay5StartTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day5Starttime: event.currentTarget.value });
+  };
+  private handleDay6StartTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day6Starttime: event.currentTarget.value });
+  };
+  private handleDay7StartTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day7Starttime: event.currentTarget.value });
+  };
+
+  private handleDay1EndTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day1Endtime: event.currentTarget.value });
+  };
+
+  private handleDay2EndTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day2Endtime: event.currentTarget.value });
+  };
+  private handleDay3EndTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day3Endtime: event.currentTarget.value });
+  };
+  private handleDay4EndTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day4Endtime: event.currentTarget.value });
+  };
+  private handleDay5EndTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day5Endtime: event.currentTarget.value });
+  };
+  private handleDay6EndTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day6Endtime: event.currentTarget.value });
+  };
+  private handleDay7EndTime = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day7Endtime: event.currentTarget.value });
+  };
+  private handleDay1Status = (event: React.FormEvent<HTMLInputElement>) => {
+    // this.setState({ day7Endtime: event.currentTarget.value });
+    console.info(event.currentTarget.value);
+  };
 
   handleSubmit = (event: any) => {
     event.preventDefault();
@@ -80,7 +192,12 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
           <div className="detail-page__form--first flex-align-center">
             <div className="flex-align-center">
               <p>Week Ending</p>
-              <input type="text" defaultValue={this.state.day7} />
+              <input
+                type="date"
+                id="start"
+                value={this.state.day7}
+                onChange={this.handleWeekEndingChange}
+              />
             </div>
             <div className="flex-align-center">
               <p>Total billing hours</p>
@@ -94,49 +211,134 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
           <div className="default-button">
             <button>SET DEFAULT</button>
           </div>
-          <div className="detail-page__form--second flex-align-center">
-            <div className="content flex-align-center">
+          <div className="detail-page__form--second flex">
+            <div className="content flex">
               <div>
                 <p>day</p>
-                <p>Sunday</p>
-                <p>Monday</p>
-                <p>Tuesday</p>
-                <p>Wednesday</p>
-                <p>Thursday</p>
-                <p>Friday</p>
-                <p>Saturday</p>
+                <p>{this.getDay(moment(this.state.day1).day())}</p>
+                <p>{this.getDay(moment(this.state.day2).day())}</p>
+                <p>{this.getDay(moment(this.state.day3).day())}</p>
+                <p>{this.getDay(moment(this.state.day4).day())}</p>
+                <p>{this.getDay(moment(this.state.day5).day())}</p>
+                <p>{this.getDay(moment(this.state.day6).day())}</p>
+                <p>{this.getDay(moment(this.state.day7).day())}</p>
               </div>
               <div>
                 <p>Date</p>
-                <p>{this.state.day1}</p>
-                <p>{this.state.day2}</p>
-                <p>{this.state.day3}</p>
-                <p>{this.state.day4}</p>
-                <p>{this.state.day5}</p>
-                <p>{this.state.day6}</p>
-                <p>{this.state.day7}</p>
+                {/* moment(moment('15-06-2010', 'DD-MM-YYYY')).format('MM-DD-YYYY') */}
+                <p>
+                  {moment(moment(this.state.day1, "YYYY-MM-DD")).format(
+                    "MM/DD/YYYY"
+                  )}
+                </p>
+                <p>
+                  {moment(moment(this.state.day2, "YYYY-MM-DD")).format(
+                    "MM/DD/YYYY"
+                  )}
+                </p>
+                <p>
+                  {moment(moment(this.state.day3, "YYYY-MM-DD")).format(
+                    "MM/DD/YYYY"
+                  )}
+                </p>
+                <p>
+                  {moment(moment(this.state.day4, "YYYY-MM-DD")).format(
+                    "MM/DD/YYYY"
+                  )}
+                </p>
+                <p>
+                  {moment(moment(this.state.day5, "YYYY-MM-DD")).format(
+                    "MM/DD/YYYY"
+                  )}
+                </p>
+                <p>
+                  {moment(moment(this.state.day6, "YYYY-MM-DD")).format(
+                    "MM/DD/YYYY"
+                  )}
+                </p>
+                <p>
+                  {moment(moment(this.state.day7, "YYYY-MM-DD")).format(
+                    "MM/DD/YYYY"
+                  )}
+                </p>
               </div>
             </div>
             <div className="content flex-align-center">
-              <div>
+              <div className="startTime">
                 <p>Starting time</p>
-                <p>{this.state.day1Starttime}</p>
-                <p>{this.state.day2Starttime}</p>
-                <p>{this.state.day3Starttime}</p>
-                <p>{this.state.day4Starttime}</p>
-                <p>{this.state.day5Starttime}</p>
-                <p>{this.state.day6Starttime}</p>
-                <p>{this.state.day7Starttime}</p>
+                <input
+                  type="time"
+                  value={this.state.day1Starttime}
+                  onChange={this.handleDay1StartTime}
+                />
+                <input
+                  type="time"
+                  value={this.state.day2Starttime}
+                  onChange={this.handleDay2StartTime}
+                />
+                <input
+                  type="time"
+                  value={this.state.day3Starttime}
+                  onChange={this.handleDay3StartTime}
+                />
+                <input
+                  type="time"
+                  value={this.state.day4Starttime}
+                  onChange={this.handleDay4StartTime}
+                />
+                <input
+                  type="time"
+                  value={this.state.day5Starttime}
+                  onChange={this.handleDay5StartTime}
+                />
+                <input
+                  type="time"
+                  value={this.state.day6Starttime}
+                  onChange={this.handleDay6StartTime}
+                />
+                <input
+                  type="time"
+                  value={this.state.day7Starttime}
+                  onChange={this.handleDay7StartTime}
+                />
               </div>
-              <div>
+              <div className="endTime">
                 <p>Ending time</p>
-                <p>{this.state.day1Endtime}</p>
-                <p>{this.state.day2Endtime}</p>
-                <p>{this.state.day3Endtime}</p>
-                <p>{this.state.day4Endtime}</p>
-                <p>{this.state.day5Endtime}</p>
-                <p>{this.state.day6Endtime}</p>
-                <p>{this.state.day7Endtime}</p>
+                <input
+                  type="time"
+                  value={this.state.day1Endtime}
+                  onChange={this.handleDay1EndTime}
+                />
+                <input
+                  type="time"
+                  value={this.state.day2Endtime}
+                  onChange={this.handleDay2EndTime}
+                />
+                <input
+                  type="time"
+                  value={this.state.day3Endtime}
+                  onChange={this.handleDay3EndTime}
+                />
+                <input
+                  type="time"
+                  value={this.state.day4Endtime}
+                  onChange={this.handleDay4EndTime}
+                />
+                <input
+                  type="time"
+                  value={this.state.day5Endtime}
+                  onChange={this.handleDay5EndTime}
+                />
+                <input
+                  type="time"
+                  value={this.state.day6Endtime}
+                  onChange={this.handleDay6EndTime}
+                />
+                <input
+                  type="time"
+                  value={this.state.day7Endtime}
+                  onChange={this.handleDay7EndTime}
+                />
               </div>
             </div>
             <div className="content">
@@ -268,158 +470,189 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                 )}
               </p>
             </div>
-            <div className="content flex-align-center">
-              <div className="floating">
-                <p>Floating day</p>
+            <div className="options-content">
+              <div className="flex-align-center">
+                <p>Floating Day</p>
+                <p>Holiday</p>
+                <p>Vacation</p>
+              </div>
+              <div className="options flex">
                 <input
-                  type="checkbox"
-                  name="day1status"
+                  type="radio"
+                  name="day1"
+                  value={this.state.day1Status}
                   defaultChecked={
                     this.state.day1Status === "floating" ? true : false
                   }
                 />
                 <input
-                  type="checkbox"
-                  name="day1status"
-                  defaultChecked={
-                    this.state.day2Status === "floating" ? true : false
-                  }
-                />
-                <input
-                  type="checkbox"
-                  name="day1status"
-                  defaultChecked={
-                    this.state.day3Status === "floating" ? true : false
-                  }
-                />
-                <input
-                  type="checkbox"
-                  name="day1status"
-                  defaultChecked={
-                    this.state.day4Status === "floating" ? true : false
-                  }
-                />
-                <input
-                  type="checkbox"
-                  name="day1status"
-                  defaultChecked={
-                    this.state.day5Status === "floating" ? true : false
-                  }
-                />
-                <input
-                  type="checkbox"
-                  name="day1status"
-                  defaultChecked={
-                    this.state.day6Status === "floating" ? true : false
-                  }
-                />
-                <input
-                  type="checkbox"
-                  name="day1status"
-                  defaultChecked={
-                    this.state.day7Status === "floating" ? true : false
-                  }
-                />
-              </div>
-              <div className="holiday">
-                <p>Holiday</p>
-                <input
-                  type="checkbox"
-                  name="day1status"
+                  type="radio"
+                  name="day1"
+                  value={this.state.day1Status}
                   defaultChecked={
                     this.state.day1Status === "holiday" ? true : false
                   }
                 />
                 <input
-                  type="checkbox"
-                  name="day1status"
+                  type="radio"
+                  name="day1"
+                  value={this.state.day1Status}
+                  defaultChecked={
+                    this.state.day1Status === "vacation" ? true : false
+                  }
+                />
+              </div>
+              <div className="options flex">
+                <input
+                  type="radio"
+                  name="day2"
+                  value={this.state.day2Status}
+                  defaultChecked={
+                    this.state.day2Status === "floating" ? true : false
+                  }
+                />
+                <input
+                  type="radio"
+                  name="day2"
+                  value={this.state.day2Status}
                   defaultChecked={
                     this.state.day2Status === "holiday" ? true : false
                   }
                 />
                 <input
-                  type="checkbox"
-                  name="day1status"
+                  type="radio"
+                  name="day2"
+                  value={this.state.day2Status}
+                  defaultChecked={
+                    this.state.day2Status === "vacation" ? true : false
+                  }
+                />
+              </div>
+              <div className="options flex">
+                <input
+                  type="radio"
+                  name="day3"
+                  value={this.state.day3Status}
+                  defaultChecked={
+                    this.state.day3Status === "floating" ? true : false
+                  }
+                />
+                <input
+                  type="radio"
+                  name="day3"
+                  value={this.state.day3Status}
                   defaultChecked={
                     this.state.day3Status === "holiday" ? true : false
                   }
                 />
                 <input
-                  type="checkbox"
-                  name="day1status"
+                  type="radio"
+                  name="day3"
+                  value={this.state.day3Status}
+                  defaultChecked={
+                    this.state.day3Status === "vacation" ? true : false
+                  }
+                />
+              </div>
+              <div className="options flex">
+                <input
+                  type="radio"
+                  name="day4"
+                  value={this.state.day4Status}
+                  defaultChecked={
+                    this.state.day4Status === "floating" ? true : false
+                  }
+                />
+                <input
+                  type="radio"
+                  name="day4"
+                  value={this.state.day4Status}
                   defaultChecked={
                     this.state.day4Status === "holiday" ? true : false
                   }
                 />
                 <input
-                  type="checkbox"
-                  name="day1status"
+                  type="radio"
+                  name="day4"
+                  value={this.state.day4Status}
+                  defaultChecked={
+                    this.state.day4Status === "vacation" ? true : false
+                  }
+                />
+              </div>
+              <div className="options flex">
+                <input
+                  type="radio"
+                  name="day5"
+                  value={this.state.day5Status}
+                  defaultChecked={
+                    this.state.day5Status === "floating" ? true : false
+                  }
+                />
+                <input
+                  type="radio"
+                  name="day5"
+                  value={this.state.day5Status}
                   defaultChecked={
                     this.state.day5Status === "holiday" ? true : false
                   }
                 />
                 <input
-                  type="checkbox"
-                  name="day1status"
+                  type="radio"
+                  name="day5"
+                  value={this.state.day5Status}
+                  defaultChecked={
+                    this.state.day5Status === "vacation" ? true : false
+                  }
+                />
+              </div>
+              <div className="options flex">
+                <input
+                  type="radio"
+                  name="day6"
+                  value={this.state.day6Status}
+                  defaultChecked={
+                    this.state.day6Status === "floating" ? true : false
+                  }
+                />
+                <input
+                  type="radio"
+                  name="day6"
+                  value={this.state.day6Status}
                   defaultChecked={
                     this.state.day6Status === "holiday" ? true : false
                   }
                 />
                 <input
-                  type="checkbox"
-                  name="day1status"
-                  defaultChecked={
-                    this.state.day7Status === "holiday" ? true : false
-                  }
-                />
-              </div>
-              <div className="vacation">
-                <p>Vacation</p>
-                <input
-                  type="checkbox"
-                  name="day1status"
-                  defaultChecked={
-                    this.state.day1Status === "vacation" ? true : false
-                  }
-                />
-                <input
-                  type="checkbox"
-                  name="day1status"
-                  defaultChecked={
-                    this.state.day2Status === "vacation" ? true : false
-                  }
-                />
-                <input
-                  type="checkbox"
-                  name="day1status"
-                  defaultChecked={
-                    this.state.day3Status === "vacation" ? true : false
-                  }
-                />
-                <input
-                  type="checkbox"
-                  name="day1status"
-                  defaultChecked={
-                    this.state.day4Status === "vacation" ? true : false
-                  }
-                />
-                <input
-                  type="checkbox"
-                  name="day1status"
-                  defaultChecked={
-                    this.state.day5Status === "vacation" ? true : false
-                  }
-                />
-                <input
-                  type="checkbox"
-                  name="day1status"
+                  type="radio"
+                  name="day6"
+                  value={this.state.day6Status}
                   defaultChecked={
                     this.state.day6Status === "vacation" ? true : false
                   }
                 />
+              </div>
+              <div className="options flex">
                 <input
-                  type="checkbox"
-                  name="day1status"
+                  type="radio"
+                  name="day7"
+                  value={this.state.day7Status}
+                  defaultChecked={
+                    this.state.day7Status === "floating" ? true : false
+                  }
+                />
+                <input
+                  type="radio"
+                  name="day7"
+                  value={this.state.day7Status}
+                  defaultChecked={
+                    this.state.day7Status === "holiday" ? true : false
+                  }
+                />
+                <input
+                  type="radio"
+                  name="day7"
+                  value={this.state.day7Status}
                   defaultChecked={
                     this.state.day7Status === "vacation" ? true : false
                   }
@@ -433,6 +666,7 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
               <option>Unapproved timesheet</option>
             </select>
             <input type="file" />
+            {/* <button className="save-button">CANCEL</button> */}
             <button className="save-button">SAVE</button>
           </div>
         </form>
