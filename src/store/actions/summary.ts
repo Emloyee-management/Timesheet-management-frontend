@@ -29,13 +29,16 @@ export const getAllSummary: ActionCreator<ThunkAction<
   IStoreState,
   null,
   SummaryAction
->> = (userId: string) => {
+>> = (userId: string, token: string) => {
   return async (dispatch) => {
     // await ApiClient.auth.loginWithPhoneAndCode(phone, code);
+    // alert(userId + "!!!!!!!!!!" + token);
     await axios
-      .get(`${baseUrl}/view-time-sheet-service/timesheet/${userId}`)
+      .get(
+        `${baseUrl}/view-time-sheet-service/timesheet/${userId}?token=${token}`
+      )
       .then((res: AxiosResponse) => {
-        console.log(res.data);
+        // console.log("data:" + res.data.length);
         dispatch(updateSummaryInfo(res.data as ISummaryInfo[]));
       });
   };

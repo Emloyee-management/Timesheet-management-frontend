@@ -65,9 +65,9 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
   }
 
   componentDidMount = () => {
-    console.info("yoyo");
-    console.info(this.props.timesheet);
-    console.info(this.props.status);
+    //   console.info("yoyo");
+    //   console.info(this.props.timesheet);
+    //   console.info(this.props.status);
   };
 
   private getDay = (num: number) => {
@@ -256,7 +256,7 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
       alert("End day must be Saturday!");
       return;
     } else {
-      console.info(this.state);
+      // console.info(this.state);
     }
   };
 

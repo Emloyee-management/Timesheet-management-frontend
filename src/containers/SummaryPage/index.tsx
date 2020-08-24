@@ -65,7 +65,11 @@ class SummaryPage extends React.Component<
       : this.setState({ itemsToShow: 5, expanded: false });
   };
   componentDidMount = () => {
-    this.props.getAllSummary(this.props.session.userInfo.id);
+    // console.log("token:" + this.props.session.userInfo.token);
+    this.props.getAllSummary(
+      this.props.session.userInfo.id,
+      this.props.session.userInfo.token
+    );
   };
 
   private SubmissionStatusinfoTag = (props: any) => {

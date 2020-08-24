@@ -115,7 +115,10 @@ class ProfilePage extends React.Component<
       token: this.props.session.userInfo.token,
     } as IUserInfo;
     axios
-      .post(`${baseUrl}/personal-info-service/userprofile`, newUser)
+      .post(
+        `${baseUrl}/personal-info-service/userprofile?token=${this.props.session.userInfo.token}`,
+        newUser
+      )
       .then(() => {
         alert("update succeeded!");
         this.props.updateUserInfo(newUser);
