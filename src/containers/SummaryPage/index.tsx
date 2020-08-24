@@ -109,6 +109,42 @@ class SummaryPage extends React.Component<
     );
   };
 
+  Comment = (props: any) => {
+    let floating = 0;
+    let holiday = 0;
+    let vacation = 0;
+
+    props.weeklyStatus.forEach((element: string) => {
+      if (element === "floating") {
+        floating = floating + 1;
+      } else if (element === "vacation") {
+        vacation = vacation + 1;
+      } else if (element === "holiday") {
+        holiday = holiday + 1;
+      }
+    });
+
+    return (
+      <p>
+        {floating > 0 ? (
+          <p> '{floating}' floating day(s) required </p>
+        ) : (
+          <p></p>
+        )}
+        {vacation > 0 ? (
+          <p> '{vacation}' vacation day(s) required </p>
+        ) : (
+          <p></p>
+        )}
+        {holiday > 0 ? (
+          <p> '{holiday}' holiday day(s) were included </p>
+        ) : (
+          <p></p>
+        )}
+      </p>
+    );
+  };
+
   render() {
     // {JSON.stringify(this.props.summary.summary)}
     return (
@@ -156,7 +192,18 @@ class SummaryPage extends React.Component<
                           <p>Edit | View</p>
                         )}
                       </td>
-                      <td>{item.comment} </td>
+                      <td>
+                        {/* {item.comment} */}
+                        <this.Comment
+                          weeklyStatus={[
+                            item.day1Status,
+                            item.day2Status,
+                            item.day3Status,
+                            item.day4Status,
+                            item.day5Status,
+                          ]}
+                        />
+                      </td>
                     </tr>
                   );
                 })}
