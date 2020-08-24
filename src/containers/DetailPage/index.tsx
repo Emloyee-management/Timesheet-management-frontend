@@ -175,15 +175,70 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
     this.setState({ day7Endtime: event.currentTarget.value });
   };
   private handleDay1Status = (event: React.FormEvent<HTMLInputElement>) => {
-    // this.setState({ day7Endtime: event.currentTarget.value });
+    this.setState({ day1Status: event.currentTarget.value });
     console.info(event.currentTarget.value);
+  };
+  private handleDay2Status = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day2Status: event.currentTarget.value });
+  };
+  private handleDay3Status = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day3Status: event.currentTarget.value });
+  };
+  private handleDay4Status = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day4Status: event.currentTarget.value });
+  };
+  private handleDay5Status = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day5Status: event.currentTarget.value });
+  };
+  private handleDay6Status = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day6Status: event.currentTarget.value });
+  };
+  private handleDay7Status = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ day7Status: event.currentTarget.value });
+  };
+
+  private setDefault = () => {
+    this.setState({
+      totalBillingHours: 0,
+      totalCompensatedHours: 0,
+      day1: "2018-03-25",
+      day1Starttime: "09:00",
+      day1Endtime: "18:00",
+      day1Status: "",
+      day2: "2018-03-26",
+      day2Starttime: "09:00",
+      day2Endtime: "18:00",
+      day2Status: "",
+      day3: "2018-03-27",
+      day3Starttime: "09:00",
+      day3Endtime: "18:00",
+      day3Status: "",
+      day4: "2018-03-28",
+      day4Starttime: "09:00",
+      day4Endtime: "18:00",
+      day4Status: "",
+      day5: "2018-03-29",
+      day5Starttime: "09:00",
+      day5Endtime: "18:00",
+      day5Status: "",
+      day6: "2018-03-30",
+      day6Starttime: "09:00",
+      day6Endtime: "18:00",
+      day6Status: "",
+      day7: "2018-03-31",
+      day7Starttime: "09:00",
+      day7Endtime: "18:00",
+      day7Status: "",
+    });
   };
 
   handleSubmit = (event: any) => {
     event.preventDefault();
   };
 
-  componentDidUpdate = () => {};
+  componentDidUpdate = () => {
+    console.info(this.state);
+  };
 
   render() {
     return (
@@ -209,9 +264,9 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
             </div>
           </div>
           <div className="default-button">
-            <button>SET DEFAULT</button>
+            <button onClick={this.setDefault}>SET DEFAULT</button>
           </div>
-          <div className="detail-page__form--second flex">
+          <div className="detail-page__form--second flex-align-center">
             <div className="content flex">
               <div>
                 <p>day</p>
@@ -263,7 +318,7 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                 </p>
               </div>
             </div>
-            <div className="content flex-align-center">
+            <div className="content-time flex-align-center">
               <div className="startTime">
                 <p>Starting time</p>
                 <input
@@ -471,191 +526,269 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
               </p>
             </div>
             <div className="options-content">
-              <div className="flex-align-center">
-                <p>Floating Day</p>
+              <div className="options-content-first flex-align-center">
+                <input value="Floating" disabled />
+                <input value="Holiday" disabled />
+                <input value="Vacation" disabled />
+                <input value="N/A" disabled />
+                {/* <p>Floating</p>
                 <p>Holiday</p>
                 <p>Vacation</p>
+                <p>N/A</p> */}
               </div>
-              <div className="options flex">
+              <div className="options top-solid flex">
                 <input
                   type="radio"
                   name="day1"
-                  value={this.state.day1Status}
+                  value="floating"
                   defaultChecked={
                     this.state.day1Status === "floating" ? true : false
                   }
+                  onChange={this.handleDay1Status}
                 />
+
                 <input
                   type="radio"
                   name="day1"
-                  value={this.state.day1Status}
+                  value="holiday"
                   defaultChecked={
                     this.state.day1Status === "holiday" ? true : false
                   }
+                  onChange={this.handleDay1Status}
                 />
+
                 <input
                   type="radio"
                   name="day1"
-                  value={this.state.day1Status}
+                  value="vacation"
                   defaultChecked={
                     this.state.day1Status === "vacation" ? true : false
                   }
+                  onChange={this.handleDay1Status}
+                />
+
+                <input
+                  type="radio"
+                  name="day1"
+                  value=""
+                  defaultChecked={this.state.day1Status === "" ? true : false}
+                  onChange={this.handleDay1Status}
                 />
               </div>
               <div className="options flex">
                 <input
                   type="radio"
                   name="day2"
-                  value={this.state.day2Status}
+                  value="floating"
                   defaultChecked={
                     this.state.day2Status === "floating" ? true : false
                   }
+                  onChange={this.handleDay2Status}
                 />
                 <input
                   type="radio"
                   name="day2"
-                  value={this.state.day2Status}
+                  value="holiday"
                   defaultChecked={
                     this.state.day2Status === "holiday" ? true : false
                   }
+                  onChange={this.handleDay2Status}
                 />
                 <input
                   type="radio"
                   name="day2"
-                  value={this.state.day2Status}
+                  value="vacation"
                   defaultChecked={
                     this.state.day2Status === "vacation" ? true : false
                   }
+                  onChange={this.handleDay2Status}
+                />
+                <input
+                  type="radio"
+                  name="day2"
+                  value=""
+                  defaultChecked={this.state.day2Status === "" ? true : false}
+                  onChange={this.handleDay2Status}
                 />
               </div>
               <div className="options flex">
                 <input
                   type="radio"
                   name="day3"
-                  value={this.state.day3Status}
+                  value="floating"
                   defaultChecked={
                     this.state.day3Status === "floating" ? true : false
                   }
+                  onChange={this.handleDay3Status}
                 />
                 <input
                   type="radio"
                   name="day3"
-                  value={this.state.day3Status}
+                  value="holiday"
                   defaultChecked={
                     this.state.day3Status === "holiday" ? true : false
                   }
+                  onChange={this.handleDay3Status}
                 />
                 <input
                   type="radio"
                   name="day3"
-                  value={this.state.day3Status}
+                  value="vacation"
                   defaultChecked={
                     this.state.day3Status === "vacation" ? true : false
                   }
+                  onChange={this.handleDay3Status}
+                />
+                <input
+                  type="radio"
+                  name="day3"
+                  value=""
+                  defaultChecked={this.state.day3Status === "" ? true : false}
+                  onChange={this.handleDay3Status}
                 />
               </div>
               <div className="options flex">
                 <input
                   type="radio"
                   name="day4"
-                  value={this.state.day4Status}
+                  value="floating"
                   defaultChecked={
                     this.state.day4Status === "floating" ? true : false
                   }
+                  onChange={this.handleDay4Status}
                 />
                 <input
                   type="radio"
                   name="day4"
-                  value={this.state.day4Status}
+                  value="holiday"
                   defaultChecked={
                     this.state.day4Status === "holiday" ? true : false
                   }
+                  onChange={this.handleDay4Status}
                 />
                 <input
                   type="radio"
                   name="day4"
-                  value={this.state.day4Status}
+                  value="vacation"
                   defaultChecked={
                     this.state.day4Status === "vacation" ? true : false
                   }
+                  onChange={this.handleDay4Status}
+                />
+                <input
+                  type="radio"
+                  name="day4"
+                  value=""
+                  defaultChecked={this.state.day4Status === "" ? true : false}
+                  onChange={this.handleDay4Status}
                 />
               </div>
               <div className="options flex">
                 <input
                   type="radio"
                   name="day5"
-                  value={this.state.day5Status}
+                  value="floating"
                   defaultChecked={
                     this.state.day5Status === "floating" ? true : false
                   }
+                  onChange={this.handleDay5Status}
                 />
                 <input
                   type="radio"
                   name="day5"
-                  value={this.state.day5Status}
+                  value="holiday"
                   defaultChecked={
                     this.state.day5Status === "holiday" ? true : false
                   }
+                  onChange={this.handleDay5Status}
                 />
                 <input
                   type="radio"
                   name="day5"
-                  value={this.state.day5Status}
+                  value="vacation"
                   defaultChecked={
                     this.state.day5Status === "vacation" ? true : false
                   }
+                  onChange={this.handleDay5Status}
+                />
+                <input
+                  type="radio"
+                  name="day5"
+                  value=""
+                  defaultChecked={this.state.day5Status === "" ? true : false}
+                  onChange={this.handleDay5Status}
                 />
               </div>
               <div className="options flex">
                 <input
                   type="radio"
                   name="day6"
-                  value={this.state.day6Status}
+                  value="floating"
                   defaultChecked={
                     this.state.day6Status === "floating" ? true : false
                   }
+                  onChange={this.handleDay6Status}
                 />
                 <input
                   type="radio"
                   name="day6"
-                  value={this.state.day6Status}
+                  value="holiday"
                   defaultChecked={
                     this.state.day6Status === "holiday" ? true : false
                   }
+                  onChange={this.handleDay6Status}
                 />
                 <input
                   type="radio"
                   name="day6"
-                  value={this.state.day6Status}
+                  value="vacation"
                   defaultChecked={
                     this.state.day6Status === "vacation" ? true : false
                   }
+                  onChange={this.handleDay6Status}
+                />
+                <input
+                  type="radio"
+                  name="day6"
+                  value=""
+                  defaultChecked={this.state.day6Status === "" ? true : false}
+                  onChange={this.handleDay6Status}
                 />
               </div>
               <div className="options flex">
                 <input
                   type="radio"
                   name="day7"
-                  value={this.state.day7Status}
+                  value="floating"
                   defaultChecked={
                     this.state.day7Status === "floating" ? true : false
                   }
+                  onChange={this.handleDay7Status}
                 />
                 <input
                   type="radio"
                   name="day7"
-                  value={this.state.day7Status}
+                  value="holiday"
                   defaultChecked={
                     this.state.day7Status === "holiday" ? true : false
                   }
+                  onChange={this.handleDay7Status}
                 />
                 <input
                   type="radio"
                   name="day7"
-                  value={this.state.day7Status}
+                  value="vacation"
                   defaultChecked={
                     this.state.day7Status === "vacation" ? true : false
                   }
+                  onChange={this.handleDay7Status}
+                />
+                <input
+                  type="radio"
+                  name="day7"
+                  value=""
+                  defaultChecked={this.state.day7Status === "" ? true : false}
+                  onChange={this.handleDay7Status}
                 />
               </div>
             </div>

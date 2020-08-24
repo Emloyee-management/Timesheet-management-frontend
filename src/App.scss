@@ -74,6 +74,10 @@ form {
   &.small-font {
     font-size: $size__font--small;
   }
+
+  &.top-solid {
+    border-top-style: solid;
+  }
 }
 
 p {
