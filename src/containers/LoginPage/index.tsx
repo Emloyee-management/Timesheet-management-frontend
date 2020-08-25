@@ -60,7 +60,7 @@ class LoginPage extends React.Component<ILoginPageProps, ILoginPageState> {
     return (
       <>
         <form onSubmit={this.handleSubmit}>
-          <div>
+          <div className="login-page__container">
             <h1>Login</h1>
             <div>
               <h4>Username:</h4>
@@ -72,13 +72,16 @@ class LoginPage extends React.Component<ILoginPageProps, ILoginPageState> {
               />
               <h4>Password:</h4>
               <input
-                type="text"
+                type="password"
                 placeholder="Enter Password"
                 name="password"
                 onChange={this.handlePasswordChange}
               />
             </div>
-            <button type="submit">Login</button>
+            <div className="login-page__button">
+              <br></br>
+              <button type="submit">Login</button>
+            </div>
           </div>
         </form>
       </>
