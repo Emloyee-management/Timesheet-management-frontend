@@ -6,6 +6,7 @@ import HomePage from "./containers/HomePage";
 import LoginPage from "./containers/LoginPage";
 import SummaryPage from "./containers/SummaryPage";
 import DetailPage from "./containers/DetailPage";
+import DetailModificationPage from "./containers/DetailModificationPage";
 
 type IRoutRouterProps = {};
 
@@ -23,10 +24,13 @@ class RootRouter extends React.Component<IRoutRouterProps, IRoutRouterState> {
       <BrowserRouter>
         <Switch>
           <Route path="/template" component={TemplatePage} />
-          <Route path="/home" component={HomePage}/>
-          <Route path="/login" component={LoginPage}/>
-          <Route path="/summary" component={SummaryPage}/>
-          <Route path="/detail" component={DetailPage} />
+          <Route path="/home" component={HomePage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/summary" component={SummaryPage} />
+          <Route
+            path="/detail/:id/:status"
+            component={DetailModificationPage}
+          />
           <Route path="/" component={LoginPage} />
         </Switch>
       </BrowserRouter>

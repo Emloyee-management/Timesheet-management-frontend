@@ -5,11 +5,12 @@ import { bindActionCreators } from "redux";
 import { IStoreState } from "../../store/reducers";
 import { DispatchFunction } from "../../store";
 import { getAllSummary } from "../../store/actions/summary";
+import { updateUserInfo } from "../../store/actions/session";
 import { AxiosResponse } from "axios";
 import axios from "axios";
 import { Table } from "react-bootstrap";
 import infoTag from "../../assets/infoTag.png";
-import comment from "../../assets/comment.png";
+
 import { baseUrl } from "src/App";
 const mapStateToProps = (state: IStoreState) => ({
   summary: state.summary,
@@ -17,12 +18,9 @@ const mapStateToProps = (state: IStoreState) => ({
 });
 
 const mapDispatchToProps = (dispatch: DispatchFunction) =>
-  bindActionCreators({ getAllSummary }, dispatch);
+  bindActionCreators({ getAllSummary, updateUserInfo }, dispatch);
 
-type ISummaryPageProps = {
-  handleSelect: (activedTab: string | null) => void;
-  handleStatus: (status: string, timesheet: ISummaryInfo) => void;
-} & ReturnType<typeof mapStateToProps> &
+type ISummaryPageProps = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
   RouteComponentProps;
 
@@ -77,21 +75,17 @@ class SummaryPage extends React.Component<
     axios
       .post(
         `${baseUrl}/view-time-sheet-service/editComment?token=${this.props.session.userInfo.token}&id=${id}&comment=${this.state.comment}`
-        // {
-        //   params: {
-        //     id: id,
-        //     comment: this.state.comment,
-        //   },
-        // }
       )
       .then((res) => {
-        console.log(res);
-        console.log(res.data);
+        alert("Add comment successfully!");
         (document.getElementById(
           `${id}inputForm`
         ) as HTMLElement).style.display = "none";
         (document.getElementById(`${id}button`) as HTMLElement).style.display =
           "block";
+      })
+      .catch(() => {
+        alert("Add comment failed!");
       });
   };
   private showMore = () => {
@@ -102,12 +96,30 @@ class SummaryPage extends React.Component<
         })
       : this.setState({ itemsToShow: 5, expanded: false });
   };
-  componentDidMount = () => {
-    // console.log("token:" + this.props.session.userInfo.token);
-    this.props.getAllSummary(
-      this.props.session.userInfo.id,
-      this.props.session.userInfo.token
-    );
+
+  componentDidMount = async () => {
+    if (!localStorage.getItem("username")) {
+      this.props.history.push("/");
+    }
+    localStorage.getItem("username") &&
+      localStorage.getItem("password") &&
+      (await axios
+        .get(
+          `${baseUrl}/session-service/login/${localStorage.getItem(
+            "username"
+          )}/${localStorage.getItem("password")}`
+        )
+        .then((result: AxiosResponse) => {
+          this.props.updateUserInfo(result.data as IUserInfo);
+        })
+        .then(() => {
+          this.props.getAllSummary(
+            this.props.session.userInfo.id,
+            this.props.session.userInfo.token,
+            this.props.session.userInfo.scope
+          );
+        }));
+    // console.info(this.props.session.userInfo);
   };
 
   private SubmissionStatusinfoTag = (props: any) => {
@@ -125,8 +137,27 @@ class SummaryPage extends React.Component<
   };
 
   private handleRedirectTimesheet = (type: string, timesheet: ISummaryInfo) => {
-    this.props.handleSelect("timesheet");
-    this.props.handleStatus(type, timesheet);
+    // this.props.handleSelect("timesheet");
+    // this.props.handleStatus(type, timesheet);
+    this.props.history.push(`/detail/${timesheet.id}/${type}`);
+  };
+
+  private handleApprove = (timesheetId: string) => {
+    axios
+      .post(
+        `${baseUrl}/view-time-sheet-service/setApproved/${timesheetId}?token=${this.props.session.userInfo.token}`
+      )
+      .then(() => {
+        this.props.getAllSummary(
+          this.props.session.userInfo.id,
+          this.props.session.userInfo.token,
+          this.props.session.userInfo.scope
+        );
+        alert("Successfully approved!");
+      })
+      .catch(() => {
+        alert("Something went wrong!");
+      });
   };
 
   private Comment = (props: any) => {
@@ -202,9 +233,27 @@ class SummaryPage extends React.Component<
                       </div>
                     </td>
 
-                    <td>{item.approvalStatus}</td>
+                    <td>
+                      {item.approvalStatus}
+                      {this.props.session.userInfo.scope === "hr" &&
+                      item.approvalStatus === "unapproved" ? (
+                        <button onClick={() => this.handleApprove(item.id)}>
+                          Approve timesheet
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                    </td>
                     <td className="view-tag">
-                      {item.approvalStatus === "approved" ? (
+                      {this.props.session.userInfo.scope === "hr" ? (
+                        <p
+                          onClick={() =>
+                            this.handleRedirectTimesheet("view", item)
+                          }
+                        >
+                          View
+                        </p>
+                      ) : item.approvalStatus === "approved" ? (
                         <p
                           onClick={() =>
                             this.handleRedirectTimesheet("view", item)
@@ -232,26 +281,33 @@ class SummaryPage extends React.Component<
                           item.day5Status,
                         ]}
                       />
-
-                      <button
-                        style={{ display: "block" }}
-                        id={`${item.id}button`}
-                        onClick={() => this.addComment(item.id)}
-                      >
-                        Add Comment
-                      </button>
-                      <div
-                        style={{ display: "none" }}
-                        id={`${item.id}inputForm`}
-                      >
-                        <input
-                          placeholder="Add Comment"
-                          onChange={this.handleCommentChange}
-                        />
-                        <button onClick={() => this.handleAddComment(item.id)}>
-                          Submit Comment
-                        </button>
-                      </div>
+                      {this.props.session.userInfo.scope === "user" ? (
+                        <p>{item.comment}</p>
+                      ) : (
+                        <>
+                          <button
+                            style={{ display: "block" }}
+                            id={`${item.id}button`}
+                            onClick={() => this.addComment(item.id)}
+                          >
+                            Add Comment
+                          </button>
+                          <div
+                            style={{ display: "none" }}
+                            id={`${item.id}inputForm`}
+                          >
+                            <input
+                              placeholder="Add Comment"
+                              onChange={this.handleCommentChange}
+                            />
+                            <button
+                              onClick={() => this.handleAddComment(item.id)}
+                            >
+                              Submit Comment
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </td>
                   </tr>
                 );

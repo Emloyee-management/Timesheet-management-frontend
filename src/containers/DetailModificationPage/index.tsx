@@ -9,27 +9,30 @@ import axios, { AxiosResponse } from "axios";
 import { baseUrl } from "src/App";
 import { getAllSummary } from "../../store/actions/summary";
 import { updateUserInfo } from "../../store/actions/session";
-import File from "../File";
 
 const mapStateToProps = (state: IStoreState) => ({ session: state.session });
 
 const mapDispatchToProps = (dispatch: DispatchFunction) =>
   bindActionCreators({ getAllSummary, updateUserInfo }, dispatch);
 
-type IDetailPageProps = ReturnType<typeof mapStateToProps> &
+type IDetailModificationPageProps = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
-  RouteComponentProps;
+  RouteComponentProps<{
+    id: string;
+    status: string;
+  }>;
 
 const initialState = {
+  id: "",
   userId: "",
   totalBillingHours: 0,
   totalCompensatedHours: 0,
-  submissionStatus: "incompleted",
-  approvalStatus: "unapproved",
+  submissionStatus: "",
+  approvalStatus: "",
   day1: moment(new Date()).format("YYYY-MM-DD").toString(),
   day1Starttime: "09:00",
   day1Endtime: "18:00",
-  day1Status: "",
+  day1Status: "n/a",
   day2: moment(moment(new Date()).format("YYYY-MM-DD"))
     .add(1, "days")
     .format("YYYY-MM-DD")
@@ -75,10 +78,13 @@ const initialState = {
   comment: "",
 };
 
-type IDetailPageState = typeof initialState;
+type IDetailModificationPageState = typeof initialState;
 
-class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
-  constructor(props: IDetailPageProps) {
+class DetailModificationPage extends React.Component<
+  IDetailModificationPageProps,
+  IDetailModificationPageState
+> {
+  constructor(props: IDetailModificationPageProps) {
     super(props);
     this.state = initialState;
   }
@@ -112,6 +118,142 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
             userId: this.props.session.userInfo.id,
           });
         }));
+    const result: AxiosResponse = await axios.get(
+      `${baseUrl}/view-time-sheet-service/getOneTimeSheet?id=${this.props.match.params.id}&token=${this.props.session.userInfo.token}`
+    );
+    const timesheet = result.data as ISummaryInfo;
+    this.setState(
+      {
+        id: timesheet.id,
+        userId: timesheet.userId,
+        totalBillingHours: timesheet.totalBillingHours,
+        totalCompensatedHours: timesheet.totalCompensatedHours,
+        submissionStatus: timesheet.submissionStatus,
+        approvalStatus: timesheet.approvalStatus,
+        day1: timesheet.day1,
+        day1Starttime: timesheet.day1Starttime,
+        day1Endtime: timesheet.day1Endtime,
+        day1Status: timesheet.day1Status,
+        day2: timesheet.day2,
+        day2Starttime: timesheet.day2Starttime,
+        day2Endtime: timesheet.day2Endtime,
+        day2Status: timesheet.day2Status,
+        day3: timesheet.day3,
+        day3Starttime: timesheet.day3Starttime,
+        day3Endtime: timesheet.day3Endtime,
+        day3Status: timesheet.day3Status,
+        day4: timesheet.day4,
+        day4Starttime: timesheet.day4Starttime,
+        day4Endtime: timesheet.day4Endtime,
+        day4Status: timesheet.day4Status,
+        day5: timesheet.day5,
+        day5Starttime: timesheet.day5Starttime,
+        day5Endtime: timesheet.day5Endtime,
+        day5Status: timesheet.day5Status,
+        day6: timesheet.day6,
+        day6Starttime: timesheet.day6Starttime,
+        day6Endtime: timesheet.day6Endtime,
+        day6Status: timesheet.day6Status,
+        day7: timesheet.day7,
+        day7Starttime: timesheet.day7Starttime,
+        day7Endtime: timesheet.day7Endtime,
+        day7Status: timesheet.day7Status,
+        comment: timesheet.comment,
+      },
+      () => {
+        console.info(this.state);
+
+        if (this.state.day1Status === "floating") {
+          this.setRadioButton(1, "floating");
+        }
+        if (this.state.day1Status === "holiday") {
+          this.setRadioButton(1, "holiday");
+        }
+        if (this.state.day1Status === "vacation") {
+          this.setRadioButton(1, "vacation");
+        }
+        if (this.state.day1Status === "") {
+          this.setRadioButton(1, "none");
+        }
+        if (this.state.day2Status === "floating") {
+          this.setRadioButton(2, "floating");
+        }
+        if (this.state.day2Status === "holiday") {
+          this.setRadioButton(2, "holiday");
+        }
+        if (this.state.day2Status === "vacation") {
+          this.setRadioButton(2, "vacation");
+        }
+        if (this.state.day2Status === "") {
+          this.setRadioButton(2, "none");
+        }
+        if (this.state.day3Status === "floating") {
+          this.setRadioButton(3, "floating");
+        }
+        if (this.state.day3Status === "holiday") {
+          this.setRadioButton(3, "holiday");
+        }
+        if (this.state.day3Status === "vacation") {
+          this.setRadioButton(3, "vacation");
+        }
+        if (this.state.day3Status === "") {
+          this.setRadioButton(3, "none");
+        }
+        if (this.state.day4Status === "floating") {
+          this.setRadioButton(4, "floating");
+        }
+        if (this.state.day4Status === "holiday") {
+          this.setRadioButton(4, "holiday");
+        }
+        if (this.state.day4Status === "vacation") {
+          this.setRadioButton(4, "vacation");
+        }
+        if (this.state.day4Status === "") {
+          this.setRadioButton(4, "none");
+        }
+        if (this.state.day5Status === "floating") {
+          this.setRadioButton(5, "floating");
+        }
+        if (this.state.day5Status === "holiday") {
+          this.setRadioButton(5, "holiday");
+        }
+        if (this.state.day5Status === "vacation") {
+          this.setRadioButton(5, "vacation");
+        }
+        if (this.state.day5Status === "") {
+          this.setRadioButton(5, "none");
+        }
+        if (this.state.day6Status === "floating") {
+          this.setRadioButton(6, "floating");
+        }
+        if (this.state.day6Status === "holiday") {
+          this.setRadioButton(6, "holiday");
+        }
+        if (this.state.day6Status === "vacation") {
+          this.setRadioButton(6, "vacation");
+        }
+        if (this.state.day6Status === "") {
+          this.setRadioButton(6, "none");
+        }
+        if (this.state.day3Status === "floating") {
+          this.setRadioButton(7, "floating");
+        }
+        if (this.state.day7Status === "holiday") {
+          this.setRadioButton(7, "holiday");
+        }
+        if (this.state.day7Status === "vacation") {
+          this.setRadioButton(7, "vacation");
+        }
+        if (this.state.day7Status === "") {
+          this.setRadioButton(7, "none");
+        }
+      }
+    );
+  };
+
+  private setRadioButton = (num: number, status: string) => {
+    //@ts-ignore
+    document.getElementById(`day${num}-${status}`)!.checked = true;
   };
 
   private getDay = (num: number) => {
@@ -120,22 +262,16 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
         return "Sunday";
       case 1:
         return "Monday";
-
       case 2:
         return "Tuesday";
-
       case 3:
         return "Wednesday";
-
       case 4:
         return "Thursday";
-
       case 5:
         return "Friday";
-
       case 6:
         return "Saturday";
-
       default:
         return "";
     }
@@ -147,7 +283,7 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
     // console.info(moment(event.currentTarget.value).day());
     // if (moment(event.currentTarget.value).day() === 6) {
     this.setState({
-      day7: event.currentTarget.value,
+      day7: moment(event.currentTarget.value).format("YYYY-MM-DD").toString(),
       day6: moment(event.currentTarget.value)
         .subtract(1, "days")
         .format("YYYY-MM-DD")
@@ -248,15 +384,56 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
   };
 
   private handleBillingHours = (event: React.FormEvent<HTMLInputElement>) => {
-    this.setState({ totalBillingHours: parseInt(event.currentTarget.value) });
+    if (event.currentTarget.value === "") {
+      this.setState({
+        totalBillingHours: 0,
+      });
+    } else {
+      this.setState({ totalBillingHours: parseInt(event.currentTarget.value) });
+    }
   };
 
   private handleCompensatedHours = (
     event: React.FormEvent<HTMLInputElement>
   ) => {
-    this.setState({
-      totalCompensatedHours: parseInt(event.currentTarget.value),
-    });
+    if (event.currentTarget.value === "") {
+      this.setState({
+        totalCompensatedHours: 0,
+      });
+    } else {
+      this.setState({
+        totalCompensatedHours: parseInt(event.currentTarget.value),
+      });
+    }
+  };
+
+  private handleSubmit = async (event: any) => {
+    event.preventDefault();
+    if (moment(this.state.day7).day() !== 6) {
+      alert("End day must be Saturday!");
+      return;
+    } else {
+      this.setState(
+        {
+          totalBillingHours: this.getTotalBillingHours(),
+          totalCompensatedHours: this.getTotalBillingHours() - 40,
+        },
+        async () => {
+          await axios
+            .post(
+              `${baseUrl}/view-time-sheet-service/setTime?token=${this.props.session.userInfo.token}`,
+              this.state
+            )
+            .then(() => {
+              alert("Update successfully");
+              this.props.history.goBack();
+            })
+            .catch(() => {
+              alert("Update failed!");
+            });
+        }
+      );
+    }
   };
 
   private getTotalBillingHours = () => {
@@ -377,95 +554,13 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
     return total;
   };
 
-  private setDefault = (e: any) => {
-    e.preventDefault();
-    this.setState(
-      {
-        // day1: moment(new Date()).format("YYYY-MM-DD").toString(),
-        day1Starttime: "09:00",
-        day1Endtime: "18:00",
-        day1Status: "",
-        // day2: moment(moment(new Date()).format("YYYY-MM-DD"))
-        //   .add(1, "days")
-        //   .format("YYYY-MM-DD")
-        //   .toString(),
-        day2Starttime: "09:00",
-        day2Endtime: "18:00",
-        day2Status: "",
-        // day3: moment(moment(new Date()).format("YYYY-MM-DD"))
-        //   .add(2, "days")
-        //   .format("YYYY-MM-DD")
-        //   .toString(),
-        day3Starttime: "09:00",
-        day3Endtime: "18:00",
-        day3Status: "",
-        // day4: moment(moment(new Date()).format("YYYY-MM-DD"))
-        //   .add(3, "days")
-        //   .format("YYYY-MM-DD")
-        //   .toString(),
-        day4Starttime: "09:00",
-        day4Endtime: "18:00",
-        day4Status: "",
-        // day5: moment(moment(new Date()).format("YYYY-MM-DD"))
-        //   .add(4, "days")
-        //   .format("YYYY-MM-DD")
-        //   .toString(),
-        day5Starttime: "09:00",
-        day5Endtime: "18:00",
-        day5Status: "",
-        // day6: moment(moment(new Date()).format("YYYY-MM-DD"))
-        //   .add(5, "days")
-        //   .format("YYYY-MM-DD")
-        //   .toString(),
-        day6Starttime: "09:00",
-        day6Endtime: "18:00",
-        day6Status: "",
-        // day7: moment(moment(new Date()).format("YYYY-MM-DD"))
-        //   .add(6, "days")
-        //   .format("YYYY-MM-DD")
-        //   .toString(),
-        day7Starttime: "09:00",
-        day7Endtime: "18:00",
-        day7Status: "",
-      },
-      () => {
-        this.setState({
-          totalBillingHours: this.getTotalBillingHours(),
-          totalCompensatedHours: this.getTotalBillingHours() - 40,
-        });
-      }
-    );
-  };
+  // private onFileChange = (event: any) => {
+  //   this.setState({ selectedFile: event.target.files[0] });
+  // };
 
-  private handleSubmit = async (event: any) => {
-    event.preventDefault();
-    this.setState({ submissionStatus: "completed" }, async () => {
-      if (moment(this.state.day7).day() !== 6) {
-        alert("End day must be Saturday!");
-        return;
-      } else {
-        await axios
-          .post(
-            `${baseUrl}/view-time-sheet-service/createTimeSheet?token=${this.props.session.userInfo.token}`,
-            this.state
-          )
-          .then(() => {
-            alert("Save successfully!");
-            this.props.getAllSummary(
-              this.props.session.userInfo.id,
-              this.props.session.userInfo.token,
-              this.props.session.userInfo.scope
-            );
-          })
-          .catch(() => {
-            alert("Save failed!");
-            return;
-          });
-      }
-    });
+  componentDidUpdate = () => {
+    console.info(this.state);
   };
-
-  componentDidUpdate = () => {};
 
   render() {
     return (
@@ -479,6 +574,9 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                 id="start"
                 value={this.state.day7}
                 onChange={this.handleWeekEndingChange}
+                disabled={
+                  this.props.match.params.status === "view" ? true : false
+                }
               />
             </div>
             <div className="flex-align-center">
@@ -500,9 +598,9 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
               />
             </div>
           </div>
-          <div className="default-button">
-            <button onClick={(e) => this.setDefault(e)}>SET DEFAULT</button>
-          </div>
+          {/* <div className="default-button">
+            <button onClick={this.setDefault}>SET DEFAULT</button>
+          </div> */}
           <div className="detail-page__form--second flex-align-center">
             <div className="content flex">
               <div>
@@ -517,7 +615,7 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
               </div>
               <div>
                 <p>Date</p>
-
+                {/* moment(moment('15-06-2010', 'DD-MM-YYYY')).format('MM-DD-YYYY') */}
                 <p>
                   {moment(moment(this.state.day1, "YYYY-MM-DD")).format(
                     "MM/DD/YYYY"
@@ -562,36 +660,57 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                   type="time"
                   value={this.state.day1Starttime}
                   onChange={this.handleDay1StartTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="time"
                   value={this.state.day2Starttime}
                   onChange={this.handleDay2StartTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="time"
                   value={this.state.day3Starttime}
                   onChange={this.handleDay3StartTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="time"
                   value={this.state.day4Starttime}
                   onChange={this.handleDay4StartTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="time"
                   value={this.state.day5Starttime}
                   onChange={this.handleDay5StartTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="time"
                   value={this.state.day6Starttime}
                   onChange={this.handleDay6StartTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="time"
                   value={this.state.day7Starttime}
                   onChange={this.handleDay7StartTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
               </div>
               <div className="endTime">
@@ -600,36 +719,57 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                   type="time"
                   value={this.state.day1Endtime}
                   onChange={this.handleDay1EndTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="time"
                   value={this.state.day2Endtime}
                   onChange={this.handleDay2EndTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="time"
                   value={this.state.day3Endtime}
                   onChange={this.handleDay3EndTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="time"
                   value={this.state.day4Endtime}
                   onChange={this.handleDay4EndTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="time"
                   value={this.state.day5Endtime}
                   onChange={this.handleDay5EndTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="time"
                   value={this.state.day6Endtime}
                   onChange={this.handleDay6EndTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="time"
                   value={this.state.day7Endtime}
                   onChange={this.handleDay7EndTime}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
               </div>
             </div>
@@ -768,48 +908,60 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                 <input value="Holiday" disabled />
                 <input value="Vacation" disabled />
                 <input value="N/A" disabled />
-                {/* <p>Floating</p>
-                <p>Holiday</p>
-                <p>Vacation</p>
-                <p>N/A</p> */}
               </div>
               <div className="options top-solid flex">
                 <input
                   type="radio"
                   name="day1"
                   value="floating"
-                  defaultChecked={
-                    this.state.day1Status === "floating" ? true : false
-                  }
+                  // defaultChecked={
+                  //   this.state.day1Status === "n/a" ? true : false
+                  // }
+                  id="day1-floating"
                   onChange={this.handleDay1Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
 
                 <input
                   type="radio"
                   name="day1"
                   value="holiday"
-                  defaultChecked={
-                    this.state.day1Status === "holiday" ? true : false
-                  }
+                  id="day1-holiday"
+                  // defaultChecked={
+                  //   this.state.day1Status === "holiday" ? true : false
+                  // }
                   onChange={this.handleDay1Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
 
                 <input
                   type="radio"
                   name="day1"
                   value="vacation"
-                  defaultChecked={
-                    this.state.day1Status === "vacation" ? true : false
-                  }
+                  id="day1-vacation"
+                  // defaultChecked={
+                  //   this.state.day1Status === "vacation" ? true : false
+                  // }
                   onChange={this.handleDay1Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
 
                 <input
                   type="radio"
                   name="day1"
                   value=""
-                  defaultChecked={this.state.day1Status === "" ? true : false}
+                  id="day1-none"
+                  // defaultChecked={this.state.day1Status === "" ? true : false}
                   onChange={this.handleDay1Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
               </div>
               <div className="options flex">
@@ -817,35 +969,51 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                   type="radio"
                   name="day2"
                   value="floating"
-                  defaultChecked={
-                    this.state.day2Status === "floating" ? true : false
-                  }
+                  id="day2-floating"
+                  // defaultChecked={
+                  //   this.state.day2Status === "floating" ? true : false
+                  // }
                   onChange={this.handleDay2Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day2"
                   value="holiday"
-                  defaultChecked={
-                    this.state.day2Status === "holiday" ? true : false
-                  }
+                  id="day2-holiday"
+                  // defaultChecked={
+                  //   this.state.day2Status === "holiday" ? true : false
+                  // }
                   onChange={this.handleDay2Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day2"
                   value="vacation"
-                  defaultChecked={
-                    this.state.day2Status === "vacation" ? true : false
-                  }
+                  id="day2-vacation"
+                  // defaultChecked={
+                  //   this.state.day2Status === "vacation" ? true : false
+                  // }
                   onChange={this.handleDay2Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day2"
                   value=""
-                  defaultChecked={this.state.day2Status === "" ? true : false}
+                  id="day2-none"
+                  // defaultChecked={this.state.day2Status === "" ? true : false}
                   onChange={this.handleDay2Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
               </div>
               <div className="options flex">
@@ -853,35 +1021,51 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                   type="radio"
                   name="day3"
                   value="floating"
-                  defaultChecked={
-                    this.state.day3Status === "floating" ? true : false
-                  }
+                  id="day3-floating"
+                  // defaultChecked={
+                  //   this.state.day3Status === "floating" ? true : false
+                  // }
                   onChange={this.handleDay3Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day3"
                   value="holiday"
-                  defaultChecked={
-                    this.state.day3Status === "holiday" ? true : false
-                  }
+                  id="day3-holiday"
+                  // defaultChecked={
+                  //   this.state.day3Status === "holiday" ? true : false
+                  // }
                   onChange={this.handleDay3Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day3"
                   value="vacation"
-                  defaultChecked={
-                    this.state.day3Status === "vacation" ? true : false
-                  }
+                  id="day3-vacation"
+                  // defaultChecked={
+                  //   this.state.day3Status === "vacation" ? true : false
+                  // }
                   onChange={this.handleDay3Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day3"
                   value=""
-                  defaultChecked={this.state.day3Status === "" ? true : false}
+                  id="day3-none"
+                  // defaultChecked={this.state.day3Status === "" ? true : false}
                   onChange={this.handleDay3Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
               </div>
               <div className="options flex">
@@ -889,35 +1073,51 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                   type="radio"
                   name="day4"
                   value="floating"
-                  defaultChecked={
-                    this.state.day4Status === "floating" ? true : false
-                  }
+                  id="day4-floating"
+                  // defaultChecked={
+                  //   this.state.day4Status === "floating" ? true : false
+                  // }
                   onChange={this.handleDay4Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day4"
                   value="holiday"
-                  defaultChecked={
-                    this.state.day4Status === "holiday" ? true : false
-                  }
+                  id="day4-holiday"
+                  // defaultChecked={
+                  //   this.state.day4Status === "holiday" ? true : false
+                  // }
                   onChange={this.handleDay4Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day4"
                   value="vacation"
-                  defaultChecked={
-                    this.state.day4Status === "vacation" ? true : false
-                  }
+                  id="day4-vacation"
+                  // defaultChecked={
+                  //   this.state.day4Status === "vacation" ? true : false
+                  // }
                   onChange={this.handleDay4Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day4"
                   value=""
-                  defaultChecked={this.state.day4Status === "" ? true : false}
+                  id="day4-none"
+                  // defaultChecked={this.state.day4Status === "" ? true : false}
                   onChange={this.handleDay4Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
               </div>
               <div className="options flex">
@@ -925,35 +1125,51 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                   type="radio"
                   name="day5"
                   value="floating"
-                  defaultChecked={
-                    this.state.day5Status === "floating" ? true : false
-                  }
+                  id="day5-floating"
+                  // defaultChecked={
+                  //   this.state.day5Status === "floating" ? true : false
+                  // }
                   onChange={this.handleDay5Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day5"
                   value="holiday"
-                  defaultChecked={
-                    this.state.day5Status === "holiday" ? true : false
-                  }
+                  id="day5-holiday"
+                  // defaultChecked={
+                  //   this.state.day5Status === "holiday" ? true : false
+                  // }
                   onChange={this.handleDay5Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day5"
                   value="vacation"
-                  defaultChecked={
-                    this.state.day5Status === "vacation" ? true : false
-                  }
+                  id="day5-vacation"
+                  // defaultChecked={
+                  //   this.state.day5Status === "vacation" ? true : false
+                  // }
                   onChange={this.handleDay5Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day5"
                   value=""
-                  defaultChecked={this.state.day5Status === "" ? true : false}
+                  id="day5-none"
+                  // defaultChecked={this.state.day5Status === "" ? true : false}
                   onChange={this.handleDay5Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
               </div>
               <div className="options flex">
@@ -961,35 +1177,51 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                   type="radio"
                   name="day6"
                   value="floating"
-                  defaultChecked={
-                    this.state.day6Status === "floating" ? true : false
-                  }
+                  id="day6-floating"
+                  // defaultChecked={
+                  //   this.state.day6Status === "floating" ? true : false
+                  // }
                   onChange={this.handleDay6Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day6"
                   value="holiday"
-                  defaultChecked={
-                    this.state.day6Status === "holiday" ? true : false
-                  }
+                  id="day6-holiday"
+                  // defaultChecked={
+                  //   this.state.day6Status === "holiday" ? true : false
+                  // }
                   onChange={this.handleDay6Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day6"
                   value="vacation"
-                  defaultChecked={
-                    this.state.day6Status === "vacation" ? true : false
-                  }
+                  id="day6-vacation"
+                  // defaultChecked={
+                  //   this.state.day6Status === "vacation" ? true : false
+                  // }
                   onChange={this.handleDay6Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day6"
                   value=""
-                  defaultChecked={this.state.day6Status === "" ? true : false}
+                  id="day6-none"
+                  // defaultChecked={this.state.day6Status === "" ? true : false}
                   onChange={this.handleDay6Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
               </div>
               <div className="options flex">
@@ -997,58 +1229,78 @@ class DetailPage extends React.Component<IDetailPageProps, IDetailPageState> {
                   type="radio"
                   name="day7"
                   value="floating"
-                  defaultChecked={
-                    this.state.day7Status === "floating" ? true : false
-                  }
+                  id="day7-floating"
+                  // defaultChecked={
+                  //   this.state.day7Status === "floating" ? true : false
+                  // }
                   onChange={this.handleDay7Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day7"
                   value="holiday"
-                  defaultChecked={
-                    this.state.day7Status === "holiday" ? true : false
-                  }
+                  id="day7-holiday"
+                  // defaultChecked={
+                  //   this.state.day7Status === "holiday" ? true : false
+                  // }
                   onChange={this.handleDay7Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day7"
                   value="vacation"
-                  defaultChecked={
-                    this.state.day7Status === "vacation" ? true : false
-                  }
+                  id="day7-vacation"
+                  // defaultChecked={
+                  //   this.state.day7Status === "vacation" ? true : false
+                  // }
                   onChange={this.handleDay7Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
                 <input
                   type="radio"
                   name="day7"
                   value=""
-                  defaultChecked={this.state.day7Status === "" ? true : false}
+                  id="day7-none"
+                  // defaultChecked={this.state.day7Status === "" ? true : false}
                   onChange={this.handleDay7Status}
+                  disabled={
+                    this.props.match.params.status === "view" ? true : false
+                  }
                 />
               </div>
             </div>
           </div>
           <div className="detail-page__form--third flex-align-center">
             <div className="save-button">
-              <button>CANCEL</button>
-              <button>SAVE</button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.props.history.goBack();
+                }}
+              >
+                {this.props.match.params.status === "view" ? "BACK" : "CANCEL"}
+              </button>
+              {this.props.match.params.status === "view" ? (
+                <></>
+              ) : (
+                <button>SAVE</button>
+              )}
             </div>
           </div>
         </form>
-        <div className="file-upload">
-          <select>
-            <option>Approved timesheet</option>
-            <option>Unapproved timesheet</option>
-          </select>
-          <File />
-        </div>
       </div>
     );
   }
 }
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(DetailPage)
+  connect(mapStateToProps, mapDispatchToProps)(DetailModificationPage)
 );

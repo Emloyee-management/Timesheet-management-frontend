@@ -40,8 +40,10 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
     });
   };
 
-  private handleTimesheetStatus = (type: string, timesheet: ISummaryInfo) => {
-    this.setState({ status: type, timesheet: timesheet });
+  componentDidUpdate = () => {
+    this.state.activeTab === "logout" &&
+      this.props.history.push("/") &&
+      localStorage.clear();
   };
 
   render() {
@@ -49,22 +51,15 @@ class HomePage extends React.Component<IHomePageProps, IHomePageState> {
       <div className="home-page__container">
         <Tabs activeKey={this.state.activeTab} onSelect={this.handleSelect}>
           <Tab eventKey="summary" title="Summary">
-            <SummaryPage
-              handleSelect={(tab: string | null) => this.handleSelect(tab)}
-              handleStatus={(status: string, timesheet: ISummaryInfo) =>
-                this.handleTimesheetStatus(status, timesheet)
-              }
-            />
+            <SummaryPage />
           </Tab>
           <Tab eventKey="timesheet" title="Timesheet">
-            <DetailPage
-              status={this.state.status}
-              timesheet={this.state.timesheet}
-            />
+            <DetailPage />
           </Tab>
           <Tab eventKey="profile" title="Profile">
             <ProfilePage />
           </Tab>
+          <Tab eventKey="logout" title="Log Out"></Tab>
         </Tabs>
       </div>
     );

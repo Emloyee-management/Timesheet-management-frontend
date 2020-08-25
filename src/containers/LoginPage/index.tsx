@@ -47,6 +47,8 @@ class LoginPage extends React.Component<ILoginPageProps, ILoginPageState> {
     const result: AxiosResponse = await axios.get(
       `${baseUrl}/session-service/login/${this.state.username}/${this.state.password}`
     );
+    localStorage.setItem("username", (result.data as IUserInfo).username);
+    localStorage.setItem("password", (result.data as IUserInfo).password);
     this.props.updateUserInfo(result.data as IUserInfo);
     if ((result.data as IUserInfo).id == null) {
       alert("wrong username or password!");

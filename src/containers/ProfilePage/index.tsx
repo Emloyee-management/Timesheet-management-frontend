@@ -113,6 +113,7 @@ class ProfilePage extends React.Component<
       emergency2Name: this.state.emergencyContact2,
       emergency2Phone: this.state.emergencyContact2Phone,
       token: this.props.session.userInfo.token,
+      scope: this.props.session.userInfo.scope,
     } as IUserInfo;
     axios
       .post(

@@ -29,17 +29,22 @@ export const getAllSummary: ActionCreator<ThunkAction<
   IStoreState,
   null,
   SummaryAction
->> = (userId: string, token: string) => {
+>> = (userId: string, token: string, scope: string) => {
   return async (dispatch) => {
-    // await ApiClient.auth.loginWithPhoneAndCode(phone, code);
-    // alert(userId + "!!!!!!!!!!" + token);
-    await axios
-      .get(
-        `${baseUrl}/view-time-sheet-service/timesheet/${userId}?token=${token}`
-      )
-      .then((res: AxiosResponse) => {
-        // console.log("data:" + res.data.length);
-        dispatch(updateSummaryInfo(res.data as ISummaryInfo[]));
-      });
+    scope === "user"
+      ? await axios
+          .get(
+            `${baseUrl}/view-time-sheet-service/timesheet/${userId}?token=${token}`
+          )
+          .then((res: AxiosResponse) => {
+            dispatch(updateSummaryInfo(res.data as ISummaryInfo[]));
+          })
+      : await axios
+          .get(
+            `${baseUrl}/view-time-sheet-service/getAllTimeSheet?token=${token}`
+          )
+          .then((res: AxiosResponse) => {
+            dispatch(updateSummaryInfo(res.data as ISummaryInfo[]));
+          });
   };
 };
