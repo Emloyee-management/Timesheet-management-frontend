@@ -11,10 +11,10 @@ const reducer: Reducer<ISummaryStore, AnyAction> = (
   state = initialState,
   action
 ) => {
-  console.info(action.payload);
+  // console.info(action.payload);
   switch (action.type) {
     case SummaryActionType.UPDATE_SUMMARY_INFO:
-      return { summary: action.payload.summary}
+      return { summary: action.payload.summary };
     default:
       return state;
   }

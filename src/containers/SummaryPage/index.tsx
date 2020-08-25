@@ -5,43 +5,20 @@ import { bindActionCreators } from "redux";
 import { IStoreState } from "../../store/reducers";
 import { DispatchFunction } from "../../store";
 import { getAllSummary } from "../../store/actions/summary";
-import { table } from "console";
+import { updateUserInfo } from "../../store/actions/session";
+import { AxiosResponse } from "axios";
+import axios from "axios";
 import { Table } from "react-bootstrap";
 import infoTag from "../../assets/infoTag.png";
 
-{
-  /* <button
-onMouseEnter={() =>
-  this.handleHoverOver(
-    item.id,
-    item.submissionStatus,
-    item.approvalStatus
-  )
-}
-onMouseLeave={() =>
-  this.handleHoverLeave(
-    item.id,
-    item.submissionStatus,
-    item.approvalStatus
-  )
-}
->
-Info
-</button>
-<p style={{ display: "none" }} id={item.id}>
-{item.submissionStatus === "Incomplete" ? (
-  <p>‘Items due: Proof of Approved TimeSheet’</p>
-) : (
-  <p></p>
-)}
-</p> */
-}
-
-const mapStateToProps = (state: IStoreState) => ({ summary: state.summary });
+import { baseUrl } from "src/App";
+const mapStateToProps = (state: IStoreState) => ({
+  summary: state.summary,
+  session: state.session,
+});
 
 const mapDispatchToProps = (dispatch: DispatchFunction) =>
-  bindActionCreators({ getAllSummary }, dispatch);
-// bindActionCreators({ getAllSummary }, dispatch);
+  bindActionCreators({ getAllSummary, updateUserInfo }, dispatch);
 
 type ISummaryPageProps = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
@@ -52,6 +29,7 @@ const initialState = {
   itemsToShow: 5,
   expanded: false,
   showBox: false,
+  comment: "",
 };
 
 type ISummaryPageState = typeof initialState;
@@ -65,24 +43,52 @@ class SummaryPage extends React.Component<
     this.state = initialState;
   }
 
-  handleHoverOver = (id: string) => {
-    //@ts-ignore
+  private handleHoverOver = (id: string) => {
     (document.getElementById(`${id}`) as HTMLElement).style.display = "block";
   };
 
-  handleHoverLeave = (id: string) => {
-    //@ts-ignore
+  private handleHoverLeave = (id: string) => {
     (document.getElementById(`${id}`) as HTMLElement).style.display = "none";
   };
 
-  handleButton = (submissionStatus: string, id: string) => {
-    //@ts-ignore
+  private handleButton = (submissionStatus: string, id: string) => {
     if (submissionStatus === "Incomplete") {
       (document.getElementById(`${id}`) as HTMLElement).style.display = "block";
     }
   };
 
-  showMore = () => {
+  private addComment = (id: string) => {
+    (document.getElementById(`${id}inputForm`) as HTMLElement).style.display =
+      "block";
+    (document.getElementById(`${id}button`) as HTMLElement).style.display =
+      "none";
+  };
+
+  private handleCommentChange = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({
+      comment: event.currentTarget.value,
+    });
+    console.log(this.state.comment);
+  };
+
+  private handleAddComment = (id: string) => {
+    axios
+      .post(
+        `${baseUrl}/view-time-sheet-service/editComment?token=${this.props.session.userInfo.token}&id=${id}&comment=${this.state.comment}`
+      )
+      .then((res) => {
+        alert("Add comment successfully!");
+        (document.getElementById(
+          `${id}inputForm`
+        ) as HTMLElement).style.display = "none";
+        (document.getElementById(`${id}button`) as HTMLElement).style.display =
+          "block";
+      })
+      .catch(() => {
+        alert("Add comment failed!");
+      });
+  };
+  private showMore = () => {
     this.state.itemsToShow === 5
       ? this.setState({
           itemsToShow: this.props.summary.summary.length,
@@ -90,26 +96,71 @@ class SummaryPage extends React.Component<
         })
       : this.setState({ itemsToShow: 5, expanded: false });
   };
-  componentDidMount = () => {
-    //  this.props.getAllSummary(this.props.session.userInfo.id)
-    this.props.getAllSummary(this.state.userId);
+
+  componentDidMount = async () => {
+    if (!localStorage.getItem("username")) {
+      this.props.history.push("/");
+    }
+    localStorage.getItem("username") &&
+      localStorage.getItem("password") &&
+      (await axios
+        .get(
+          `${baseUrl}/session-service/login/${localStorage.getItem(
+            "username"
+          )}/${localStorage.getItem("password")}`
+        )
+        .then((result: AxiosResponse) => {
+          this.props.updateUserInfo(result.data as IUserInfo);
+        })
+        .then(() => {
+          this.props.getAllSummary(
+            this.props.session.userInfo.id,
+            this.props.session.userInfo.token,
+            this.props.session.userInfo.scope
+          );
+        }));
+    // console.info(this.props.session.userInfo);
   };
 
-  SubmissionStatusinfoTag = (props: any) => {
+  private SubmissionStatusinfoTag = (props: any) => {
     return (
-      <p>
+      <>
         {props.submissionStatus === "Incomplete" ? (
           <p>Items due: Proof of Approved TimeSheet</p>
         ) : props.approvalStatus === "unapproved" ? (
           <p>Approval denied by Admin, please contact your HR manager</p>
         ) : (
-          <p> </p>
+          <> </>
         )}
-      </p>
+      </>
     );
   };
 
-  Comment = (props: any) => {
+  private handleRedirectTimesheet = (type: string, timesheet: ISummaryInfo) => {
+    // this.props.handleSelect("timesheet");
+    // this.props.handleStatus(type, timesheet);
+    this.props.history.push(`/detail/${timesheet.id}/${type}`);
+  };
+
+  private handleApprove = (timesheetId: string) => {
+    axios
+      .post(
+        `${baseUrl}/view-time-sheet-service/setApproved/${timesheetId}?token=${this.props.session.userInfo.token}`
+      )
+      .then(() => {
+        this.props.getAllSummary(
+          this.props.session.userInfo.id,
+          this.props.session.userInfo.token,
+          this.props.session.userInfo.scope
+        );
+        alert("Successfully approved!");
+      })
+      .catch(() => {
+        alert("Something went wrong!");
+      });
+  };
+
+  private Comment = (props: any) => {
     let floating = 0;
     let holiday = 0;
     let vacation = 0;
@@ -117,39 +168,38 @@ class SummaryPage extends React.Component<
     props.weeklyStatus.forEach((element: string) => {
       if (element === "floating") {
         floating = floating + 1;
+        // this.setState((state) => {
+        //   // Important: read `state` instead of `this.state` when updating.
+        //   return { remainingFloating: state.remainingFloating - 1 };
+        // });
       } else if (element === "vacation") {
         vacation = vacation + 1;
+        // this.setState((state) => {
+        //   // Important: read `state` instead of `this.state` when updating.
+        //   return { remainingVacation: state.remainingVacation - 1 };
+        // });
       } else if (element === "holiday") {
         holiday = holiday + 1;
       }
     });
 
     return (
-      <p>
-        {floating > 0 ? (
-          <p> '{floating}' floating day(s) required </p>
-        ) : (
-          <p></p>
-        )}
-        {vacation > 0 ? (
-          <p> '{vacation}' vacation day(s) required </p>
-        ) : (
-          <p></p>
-        )}
+      <>
+        {floating > 0 ? <p> '{floating}' floating day(s) required </p> : <></>}
+        {vacation > 0 ? <p> '{vacation}' vacation day(s) required </p> : <></>}
         {holiday > 0 ? (
           <p> '{holiday}' holiday day(s) were included </p>
         ) : (
-          <p></p>
+          <></>
         )}
-      </p>
+      </>
     );
   };
 
   render() {
-    // {JSON.stringify(this.props.summary.summary)}
     return (
       <div className="summary-page__container">
-        <Table striped bordered hover>
+        <Table className="summary-page__table" striped bordered hover>
           <thead>
             <tr>
               <th>WeekEnding</th>
@@ -169,30 +219,59 @@ class SummaryPage extends React.Component<
                     <td>{item.day7}</td>
                     <td>{item.totalBillingHours}</td>
                     <td>
-                      {item.submissionStatus}{" "}
+                      {item.submissionStatus}
                       <img
                         src={infoTag}
                         onMouseEnter={() => this.handleHoverOver(item.id)}
                         onMouseLeave={() => this.handleHoverLeave(item.id)}
                       />
-                      <p style={{ display: "none" }} id={item.id}>
+                      <div style={{ display: "none" }} id={item.id}>
                         <this.SubmissionStatusinfoTag
                           submissionStatus={item.submissionStatus}
                           approvalStatus={item.approvalStatus}
                         />
-                      </p>
+                      </div>
                     </td>
 
-                    <td>{item.approvalStatus}</td>
                     <td>
-                      {item.approvalStatus === "approved" ? (
-                        <p>View</p>
+                      {item.approvalStatus}
+                      {this.props.session.userInfo.scope === "hr" &&
+                      item.approvalStatus === "unapproved" ? (
+                        <button onClick={() => this.handleApprove(item.id)}>
+                          Approve timesheet
+                        </button>
                       ) : (
-                        <p>Edit | View</p>
+                        <></>
+                      )}
+                    </td>
+                    <td className="view-tag">
+                      {this.props.session.userInfo.scope === "hr" ? (
+                        <p
+                          onClick={() =>
+                            this.handleRedirectTimesheet("view", item)
+                          }
+                        >
+                          View
+                        </p>
+                      ) : item.approvalStatus === "approved" ? (
+                        <p
+                          onClick={() =>
+                            this.handleRedirectTimesheet("view", item)
+                          }
+                        >
+                          View
+                        </p>
+                      ) : (
+                        <p
+                          onClick={() =>
+                            this.handleRedirectTimesheet("edit", item)
+                          }
+                        >
+                          Edit
+                        </p>
                       )}
                     </td>
                     <td>
-                      {/* {item.comment} */}
                       <this.Comment
                         weeklyStatus={[
                           item.day1Status,
@@ -202,6 +281,33 @@ class SummaryPage extends React.Component<
                           item.day5Status,
                         ]}
                       />
+                      {this.props.session.userInfo.scope === "user" ? (
+                        <p>{item.comment}</p>
+                      ) : (
+                        <>
+                          <button
+                            style={{ display: "block" }}
+                            id={`${item.id}button`}
+                            onClick={() => this.addComment(item.id)}
+                          >
+                            Add Comment
+                          </button>
+                          <div
+                            style={{ display: "none" }}
+                            id={`${item.id}inputForm`}
+                          >
+                            <input
+                              placeholder="Add Comment"
+                              onChange={this.handleCommentChange}
+                            />
+                            <button
+                              onClick={() => this.handleAddComment(item.id)}
+                            >
+                              Submit Comment
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </td>
                   </tr>
                 );
@@ -217,10 +323,6 @@ class SummaryPage extends React.Component<
             )}
           </button>
         </div>
-        <h2>
-          Currently, we are using hardcoded UserID. This should be changed after
-          Login Feature is enabled. Check componentDidMount()
-        </h2>
       </div>
     );
   }

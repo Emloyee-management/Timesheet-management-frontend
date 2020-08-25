@@ -1,6 +1,14 @@
 .summary-page__container {
   width: 100%;
   height: 100%;
+  .summary-page__table {
+    .view-tag {
+      p {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+  }
   .show-button {
     text-align: center;
   }

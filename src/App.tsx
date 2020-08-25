@@ -2,7 +2,9 @@ import React from "react";
 import RootRouter from "./RootRouter";
 import { Provider } from "react-redux";
 import store from "../src/store";
-import './App.scss';
+import "./App.scss";
+
+export const baseUrl = "http://localhost:7777";
 
 function App() {
   return (

@@ -30,6 +30,7 @@ h4 {
   padding: 0px;
 }
 
+#root,
 html,
 body {
   margin: 0px;
@@ -73,6 +74,10 @@ form {
   &.small-font {
     font-size: $size__font--small;
   }
+
+  &.top-solid {
+    border-top-style: solid;
+  }
 }
 
 p {
@@ -91,3 +96,7 @@ p {
 @import "./containers/LoginPage/style.scss";
 @import "./containers/HomePage/style.scss";
 @import "./containers/SummaryPage/style.scss";
+
+@import "./containers/ProfilePage/style.scss";
+@import "./containers/DetailPage/styles.scss";
+@import "./containers/File/styles.scss";

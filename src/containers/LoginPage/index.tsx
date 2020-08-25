@@ -4,19 +4,21 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { IStoreState } from "../../store/reducers";
 import { DispatchFunction } from "../../store";
-import { login } from "../../store/actions/session";
+import { login, updateUserInfo } from "../../store/actions/session";
+import { AxiosResponse } from "axios";
 import axios from "axios";
+import { baseUrl } from "src/App";
 
 const mapStateToProps = (state: IStoreState) => ({ session: state.session });
 
 const mapDispatchToProps = (dispatch: DispatchFunction) =>
-  bindActionCreators({ login }, dispatch);
+  bindActionCreators({ login, updateUserInfo }, dispatch);
 
 type ILoginPageProps = ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps> &
   RouteComponentProps;
 
-const initialState = {username:'', password:''};
+const initialState = { username: "", password: "" };
 
 type ILoginPageState = typeof initialState;
 
@@ -27,36 +29,40 @@ class LoginPage extends React.Component<ILoginPageProps, ILoginPageState> {
   }
 
   handleUsernameChange = (event: React.FormEvent<HTMLInputElement>) => {
-
     this.setState({
-      username: event.currentTarget.value
-
+      username: event.currentTarget.value,
     });
-    // console.log(this.state)
   };
 
   handlePasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
-
     this.setState({
-      password: event.currentTarget.value
-      
+      password: event.currentTarget.value,
     });
-    // console.log(this.state)
   };
 
-  handleSubmit = async (event: any) => {
-
+  handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
+    event: any
+  ) => {
     event.preventDefault();
-    await this.props.login(this.state.username, this.state.password)
-    
-    
-  }
+    const result: AxiosResponse = await axios.get(
+      `${baseUrl}/session-service/login/${this.state.username}/${this.state.password}`
+    );
+    localStorage.setItem("username", (result.data as IUserInfo).username);
+    localStorage.setItem("password", (result.data as IUserInfo).password);
+    this.props.updateUserInfo(result.data as IUserInfo);
+    if ((result.data as IUserInfo).id == null) {
+      alert("wrong username or password!");
+      return;
+    } else {
+      this.props.history.push("/home");
+    }
+  };
 
   render() {
     return (
       <>
-        <form>
-          <div>
+        <form onSubmit={this.handleSubmit}>
+          <div className="login-page__container">
             <h1>Login</h1>
             <div>
               <h4>Username:</h4>
@@ -68,13 +74,16 @@ class LoginPage extends React.Component<ILoginPageProps, ILoginPageState> {
               />
               <h4>Password:</h4>
               <input
-                type="text"
+                type="password"
                 placeholder="Enter Password"
                 name="password"
                 onChange={this.handlePasswordChange}
               />
             </div>
-            <button type="submit" onClick={this.handleSubmit}>Login</button>
+            <div className="login-page__button">
+              <br></br>
+              <button type="submit">Login</button>
+            </div>
           </div>
         </form>
       </>

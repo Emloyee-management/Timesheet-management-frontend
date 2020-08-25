@@ -9,10 +9,11 @@ declare interface IUserInfo {
   emergency1Phone: string;
   emergency2Name: string;
   emergency2Phone: string;
+  scope: string;
   token: string;
 }
 
-declare interface ISummaryInfo{
+declare interface ISummaryInfo {
   id: string;
   userId: string;
   totalBillingHours: int;
