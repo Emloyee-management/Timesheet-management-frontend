@@ -5,10 +5,12 @@ import { bindActionCreators } from "redux";
 import { IStoreState } from "../../store/reducers";
 import { DispatchFunction } from "../../store";
 import { getAllSummary } from "../../store/actions/summary";
-
+import { AxiosResponse } from "axios";
+import axios from "axios";
 import { Table } from "react-bootstrap";
 import infoTag from "../../assets/infoTag.png";
-
+import comment from "../../assets/comment.png";
+import { baseUrl } from "src/App";
 const mapStateToProps = (state: IStoreState) => ({
   summary: state.summary,
   session: state.session,
@@ -29,6 +31,7 @@ const initialState = {
   itemsToShow: 5,
   expanded: false,
   showBox: false,
+  comment: "",
 };
 
 type ISummaryPageState = typeof initialState;
@@ -56,6 +59,41 @@ class SummaryPage extends React.Component<
     }
   };
 
+  private addComment = (id: string) => {
+    (document.getElementById(`${id}inputForm`) as HTMLElement).style.display =
+      "block";
+    (document.getElementById(`${id}button`) as HTMLElement).style.display =
+      "none";
+  };
+
+  private handleCommentChange = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({
+      comment: event.currentTarget.value,
+    });
+    console.log(this.state.comment);
+  };
+
+  private handleAddComment = (id: string) => {
+    axios
+      .post(
+        `${baseUrl}/view-time-sheet-service/editComment?token=${this.props.session.userInfo.token}&id=${id}&comment=${this.state.comment}`
+        // {
+        //   params: {
+        //     id: id,
+        //     comment: this.state.comment,
+        //   },
+        // }
+      )
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        (document.getElementById(
+          `${id}inputForm`
+        ) as HTMLElement).style.display = "none";
+        (document.getElementById(`${id}button`) as HTMLElement).style.display =
+          "block";
+      });
+  };
   private showMore = () => {
     this.state.itemsToShow === 5
       ? this.setState({
@@ -99,8 +137,16 @@ class SummaryPage extends React.Component<
     props.weeklyStatus.forEach((element: string) => {
       if (element === "floating") {
         floating = floating + 1;
+        // this.setState((state) => {
+        //   // Important: read `state` instead of `this.state` when updating.
+        //   return { remainingFloating: state.remainingFloating - 1 };
+        // });
       } else if (element === "vacation") {
         vacation = vacation + 1;
+        // this.setState((state) => {
+        //   // Important: read `state` instead of `this.state` when updating.
+        //   return { remainingVacation: state.remainingVacation - 1 };
+        // });
       } else if (element === "holiday") {
         holiday = holiday + 1;
       }
@@ -186,6 +232,26 @@ class SummaryPage extends React.Component<
                           item.day5Status,
                         ]}
                       />
+
+                      <button
+                        style={{ display: "block" }}
+                        id={`${item.id}button`}
+                        onClick={() => this.addComment(item.id)}
+                      >
+                        Add Comment
+                      </button>
+                      <div
+                        style={{ display: "none" }}
+                        id={`${item.id}inputForm`}
+                      >
+                        <input
+                          placeholder="Add Comment"
+                          onChange={this.handleCommentChange}
+                        />
+                        <button onClick={() => this.handleAddComment(item.id)}>
+                          Submit Comment
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
